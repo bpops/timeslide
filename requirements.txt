@@ -1,0 +1,14 @@
+youtube_dl==2020.5.8
+matplotlib==3.2.1
+ffmpeg_python==0.1.17
+torch==1.5.0
+opencv_python==4.2.0.34
+torchvision==0.6.0
+numpy==1.18.4
+requests==2.23.0
+scipy==1.4.1
+fastai==1.0.51
+ffmpeg==1.4
+ipython==7.15.0
+Pillow==7.1.2
+tensorboardX==2.0

@@ -17,7 +17,9 @@ Run the bootstrap file which will clone deoldify, download the colorizing model,
 sh boot_strap.sh
 ```
 
-Run the python script
+## Run
+
+Just run the python script
 
 ```
 python timeslide.py
