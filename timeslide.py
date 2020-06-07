@@ -16,7 +16,7 @@ device.set(device = DeviceId.GPU0)
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 colorizer = get_image_colorizer(artistic=True)
-render_factor = 10
+render_factor = 30
 
 # other modules
 import tkinter as tk
