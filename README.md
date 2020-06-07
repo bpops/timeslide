@@ -30,5 +30,5 @@ python timeslide.py
 ## Notes
 
 - timeslide is very preliminary; lots of ideas on features to add
-- image size and aspect ratio in window is just for display; the saved images will be correct resolution and proportions
+- image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions
 - tested so far only on macOS
