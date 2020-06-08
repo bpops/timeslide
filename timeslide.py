@@ -29,7 +29,7 @@ import os
 # canvas
 canv_width  = 500
 canv_height = 400
-bg_color    = "#EDECED"
+bg_color    = "#ECEBEC"
 
 class Window(tk.Frame):
 
