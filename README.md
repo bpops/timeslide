@@ -11,7 +11,7 @@ Much thanks to all the hard work by the [deoldify](https://github.com/jantic/DeO
 Run the bootstrap file which will clone deoldify, download the colorizing model, and install all python requirements (if you want to run in a virtual environment then you'll instead want to run these steps manually).
 
 ```
-sh boot_strap.sh
+sh bootstrap.sh
 ```
 
 ## Run
