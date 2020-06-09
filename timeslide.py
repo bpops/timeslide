@@ -92,9 +92,27 @@ class Window(tk.Frame):
         self.str_url = tk.Text(frame_load, width=40, height=1)
         self.str_url.pack(side=tk.RIGHT, padx=4)
 
+        # FRAME - colorize
+
+        frame_colorize = tk.LabelFrame(self, text="Step 2: Colorize",
+            pady=4, bg=bg_color)
+        frame_colorize.pack(fill="x", padx=4)
+
+        # colorize check box
+        self.colorize_int = tk.IntVar()
+        self.colorize_int.set(1)
+        chk_colorize = ttk.Checkbutton(frame_colorize, text="Colorize",
+            variable=self.colorize_int, offvalue=0, onvalue=1)
+        chk_colorize.pack(side=tk.LEFT)
+       
+        # colorize render factor
+        min_rndr_fctr = 7
+        max_rndr_fctr = 45
+        # TODO: include slider 7 - 45
+
         # FRAME - finish
 
-        frame_finish = tk.LabelFrame(self, text="Step 2: Finish Up",
+        frame_finish = tk.LabelFrame(self, text="Step 3: Finish Up",
             pady=4, bg=bg_color)
         frame_finish.pack(fill="x", padx=4)
        
@@ -150,19 +168,24 @@ class Window(tk.Frame):
     # timeslide
     def timeslide(self):
 
-        if self.load_method in "open_file":
-            self.result_path = colorizer.plot_transformed_image(
-                path = self.file_path, render_factor = render_factor,
-                compare = False)
-        elif self.load_method in "load_url":
-            print(self.str_url.get("1.0",tk.END))
-            self.result_path = colorizer.plot_transformed_image_from_url(
-                url=self.str_url.get("1.0",tk.END), path='//tmp/tmp.png',
-                render_factor = render_factor, compare = False)
-        img = Image.open(self.result_path)
-        img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
-        self.canvas.img_tk = ImageTk.PhotoImage(img)
-        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+        if (self.colorize_int.get() == 1):
+
+            if self.load_method in "open_file":
+                self.result_path = colorizer.plot_transformed_image(
+                    path = self.file_path, render_factor = render_factor,
+                    compare = False)
+            elif self.load_method in "load_url":
+                print(self.str_url.get("1.0",tk.END))
+                self.result_path = colorizer.plot_transformed_image_from_url(
+                    url=self.str_url.get("1.0",tk.END), path='//tmp/tmp.png',
+                    render_factor = render_factor, compare = False)
+            img = Image.open(self.result_path)
+            img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
+            self.canvas.img_tk = ImageTk.PhotoImage(img)
+            self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+
+        else:
+            pass
 
         # enable save button
         self.btn_save_photo['state'] = 'normal'
@@ -183,7 +206,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix514" % canv_width)
+root.geometry("%ix564" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
