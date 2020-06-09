@@ -16,7 +16,6 @@ device.set(device = DeviceId.GPU0)
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 colorizer = get_image_colorizer(artistic=True)
-render_factor = 30
 
 # other modules
 import tkinter as tk
@@ -108,7 +107,14 @@ class Window(tk.Frame):
         # colorize render factor
         min_rndr_fctr = 7
         max_rndr_fctr = 45
-        # TODO: include slider 7 - 45
+        self.scale_rf = tk.Scale(frame_colorize,
+            from_=min_rndr_fctr, to=max_rndr_fctr, orient="horizontal",
+            length=300)
+        self.scale_rf.pack(side=tk.RIGHT, fill="x")
+        self.scale_rf.set(30)
+        label_rf = ttk.Label(frame_colorize, text="Render Factor: ",
+            background=bg_color)
+        label_rf.pack(sid=tk.RIGHT)
 
         # FRAME - finish
 
@@ -168,7 +174,11 @@ class Window(tk.Frame):
     # timeslide
     def timeslide(self):
 
+        # do colorization
         if (self.colorize_int.get() == 1):
+
+            # get render factor
+            render_factor = self.scale_rf.get()
 
             if self.load_method in "open_file":
                 self.result_path = colorizer.plot_transformed_image(
@@ -206,7 +216,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix564" % canv_width)
+root.geometry("%ix584" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
