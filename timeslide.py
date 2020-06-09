@@ -98,11 +98,11 @@ class Window(tk.Frame):
             pady=4, bg=bg_color)
         frame_finish.pack(fill="x", padx=4)
        
-        # colorize button
-        self.btn_colorize = ttk.Button(frame_finish, text="Slide Time!",
-            command=self.colorize)
-        self.btn_colorize['state'] = 'disabled'
-        self.btn_colorize.pack(side=tk.LEFT)
+        # timeslide button
+        self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
+            command=self.timeslide)
+        self.btn_timeslide['state'] = 'disabled'
+        self.btn_timeslide.pack(side=tk.LEFT)
 
         # save as button
         self.btn_save_photo = ttk.Button(frame_finish, text="Save New Photo...",
@@ -125,8 +125,8 @@ class Window(tk.Frame):
         self.canvas.img_tk = ImageTk.PhotoImage(img)
         self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
 
-        # enable colorize button
-        self.btn_colorize['state'] = 'normal'
+        # enable timeslide button
+        self.btn_timeslide['state'] = 'normal'
 
         # set load method
         self.load_method="open_file"
@@ -141,14 +141,14 @@ class Window(tk.Frame):
         self.canvas.img_tk = ImageTk.PhotoImage(img)
         self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
 
-        # enable colorize button
-        self.btn_colorize['state'] = 'normal'
+        # enable timeslide button
+        self.btn_timeslide['state'] = 'normal'
 
         # set load method
         self.load_method="load_url"
 
-    # colorize
-    def colorize(self):
+    # timeslide
+    def timeslide(self):
 
         if self.load_method in "open_file":
             self.result_path = colorizer.plot_transformed_image(
