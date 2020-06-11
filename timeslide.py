@@ -13,6 +13,7 @@
 from deoldify import device
 from deoldify.device_id import DeviceId
 device.set(device = DeviceId.GPU0)
+
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 colorizer = get_image_colorizer(artistic=True)
@@ -109,7 +110,7 @@ class Window(tk.Frame):
         max_rndr_fctr = 45
         self.scale_rf = tk.Scale(frame_colorize,
             from_=min_rndr_fctr, to=max_rndr_fctr, orient="horizontal",
-            length=300)
+            length=300, bg=bg_color)
         self.scale_rf.pack(side=tk.RIGHT, fill="x")
         self.scale_rf.set(30)
         label_rf = ttk.Label(frame_colorize, text="Render Factor: ",
