@@ -57,7 +57,7 @@ class Window(tk.Frame):
 
         # create the file menu
         file = tk.Menu(menu)
-        file.add_command(label="Load Photo...", command=self.open_file)
+        file.add_command(label="Open Local Photo...", command=self.open_file)
         file.add_command(label="Exit", command=self.client_exit)
         menu.add_cascade(label="File", menu=file)
 
@@ -75,7 +75,7 @@ class Window(tk.Frame):
         frame_load.pack(fill="x", padx=4)
         
         # open_file button
-        btn_open_photo = ttk.Button(frame_load, text="Open Local File...",
+        btn_open_photo = ttk.Button(frame_load, text="Open Local Photo...",
             command=self.open_file)
         btn_open_photo.pack(side=tk.LEFT)
         label_or = ttk.Label(frame_load, text="  or  ", background=bg_color)
