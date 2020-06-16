@@ -30,4 +30,5 @@ python timeslide.py
 
 - timeslide is very preliminary; lots of ideas on features to add
 - image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions
-- tested so far only on macOS
+- tested so far only on macOS, Python 3.8
+- fasti must be installed (via pip) with no dependencies (i.e., `pip install --no-deps fastai`)
