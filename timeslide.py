@@ -13,16 +13,14 @@
 from deoldify import device
 from deoldify.device_id import DeviceId
 device.set(device = DeviceId.GPU0)
-
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
-colorizer = get_image_colorizer(artistic=True)
 
 # other modules
 import tkinter as tk
 import tkinter.filedialog
 from tkinter import ttk
-from PIL import ImageTk, Image
+from PIL import Image, ImageTk
 import shutil
 import os
 import urllib.request
@@ -105,12 +103,21 @@ class Window(tk.Frame):
             variable=self.colorize_int, offvalue=0, onvalue=1)
         chk_colorize.pack(side=tk.LEFT)
        
+        # colorize model dropdown
+        self.model_vars = tk.StringVar(frame_colorize)
+        self.model_vars.set("Stable")
+        model_label = tk.Label(frame_colorize, text='Model:', bg=bg_color)
+        model_label.pack(side=tk.LEFT, padx=(15,0))
+        self.colorize_model = tk.OptionMenu(frame_colorize, self.model_vars,
+            "Stable", "Artistic")
+        self.colorize_model.pack(side=tk.LEFT, padx=0)
+        
         # colorize render factor
         min_rndr_fctr = 7
         max_rndr_fctr = 45
         self.scale_rf = tk.Scale(frame_colorize,
             from_=min_rndr_fctr, to=max_rndr_fctr, orient="horizontal",
-            length=300, bg=bg_color)
+            length=150, bg=bg_color)
         self.scale_rf.pack(side=tk.RIGHT, fill="x")
         self.scale_rf.set(30)
         label_rf = ttk.Label(frame_colorize, text="Render Factor: ",
@@ -177,6 +184,12 @@ class Window(tk.Frame):
 
         # do colorization
         if (self.colorize_int.get() == 1):
+
+            # determine colorizer model
+            if (self.model_vars.get() == "Artistic"):
+                colorizer = get_image_colorizer(artistic=True)
+            elif (self.model_vars.get() == "Stable"):
+                colorizer = get_image_colorizer(artistic=False)
 
             # get render factor
             render_factor = self.scale_rf.get()
