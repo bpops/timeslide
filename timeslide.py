@@ -10,7 +10,7 @@
 #
 
 # required for pyinstaller: pytorch
-import os
+import os, sys
 os.environ["PYTORCH_JIT"] = "0"
 
 # to be used for dev vs bundled paths
@@ -58,7 +58,7 @@ class Window(tk.Frame):
         self.load_method=None
 
         # setup
-        self.master.title("TimeSlide")
+        self.master.title("TimeSlide v0.1")
         self.pack(fill=tk.BOTH, expand=1)
 
         # creating a menu instance
