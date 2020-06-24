@@ -8,10 +8,10 @@ Much thanks to all the hard work by the [deoldify](https://github.com/jantic/DeO
 
 ## Setup
 
-Run the bootstrap file which will clone deoldify, download the colorizing model, and install all python requirements (if you want to run in a virtual environment then you'll instead want to run these steps manually).
+Run the bootstrap file which will clone deoldify, download the colorizing model, and install all python requirements.
 
 ```
-sh bootstrap.sh
+source bootstrap.sh
 ```
 
 ## Run
@@ -22,6 +22,14 @@ Just run the python script
 python timeslide.py
 ```
 
+## Bundle
+
+Double check the file `timeslide.spec` in case any paths require modification. Then, in macOS, run
+
+```
+source bundle_macos.sh
+```
+
 ## Useful Links
 
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
@@ -30,4 +38,4 @@ python timeslide.py
 
 - timeslide is very preliminary; lots of ideas on features to add
 - image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions
-- tested so far only on macOS, Python 3.7
+- tested so far only on macOS, Python 3.7 installed with homebrew
