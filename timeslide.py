@@ -10,7 +10,14 @@
 #
 
 # required for pyinstaller: pytorch
+import os
 os.environ["PYTORCH_JIT"] = "0"
+
+# to be used for dev vs bundled paths
+try:
+   wd = sys._MEIPASS
+except AttributeError:
+   wd = os.getcwd()
 
 # set up delodify
 from deoldify import device
@@ -73,8 +80,8 @@ class Window(tk.Frame):
 
         # FRAME - load old photo
 
-        frame_load = tk.LabelFrame(self, text="Step 1: Load Old Photo",
-            pady=4, bg=bg_color)
+        frame_load = tk.LabelFrame(self,
+            text="Step 1: Load Old Black-and-White Photo", pady=4, bg=bg_color)
         frame_load.pack(fill="x", padx=4)
         
         # open_file button

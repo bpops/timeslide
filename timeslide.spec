@@ -4,9 +4,9 @@ block_cipher = None
 
 
 a = Analysis(['timeslide.py'],
-             pathex=['.'],#'~/repos/timeslide'],
+             pathex=['.'],
              binaries=[],
-             datas=[],
+             datas=[('models/*','models')],
              hiddenimports=[],
              hookspath=['hooks'],
              runtime_hooks=[],
