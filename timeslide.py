@@ -43,11 +43,9 @@ bg_color    = "#ECECEC"
 
 class Window(tk.Frame):
 
-    # Define settings upon initialization. Here you can specify
     def __init__(self, master=None):
         
         tk.Frame.__init__(self, master, bg=bg_color)   
-        #reference to the master widget, which is the tk window                 
         self.master = master
         self.init_window()
 
