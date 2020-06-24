@@ -9,6 +9,9 @@
 #        a beautifully simple gui to slide old photographs into TODAY
 #
 
+# required for pyinstaller: pytorch
+os.environ["PYTORCH_JIT"] = "0"
+
 # set up delodify
 from deoldify import device
 from deoldify.device_id import DeviceId
