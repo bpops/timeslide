@@ -18,6 +18,7 @@ try:
    wd = sys._MEIPASS
 except AttributeError:
    wd = os.getcwd()
+os.chdir(wd)
 
 # set up delodify
 from deoldify import device
