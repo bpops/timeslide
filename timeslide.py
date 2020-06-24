@@ -6,7 +6,7 @@
 #       \ \__\\ \_\ \_\ \_\ \_\ \____\/\____/ /\____\\ \_\ \___,_\ \____\
 #        \/__/ \/_/\/_/\/_/\/_/\/____/\/___/  \/____/ \/_/\/__,_ /\/____/
 #
-#        a beautifully simple gui to slide old photographs into TODAY
+#           a super-simple gui to slide old photographs into TODAY
 #
 
 # required for pyinstaller: pytorch
