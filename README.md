@@ -1,14 +1,14 @@
-# timeslide
+# TimeSlide
 
-__a beautifully simple gui to slide old photographs into TODAY__
+__a super-simple gui to slide old photographs into TODAY__
 
-Timeslide is a prototype concept for an application to balance the ease of applying machine-learning colorizing and "de-oldifying" photographs without having to possess coding expertise or upload your photographs to an online service. It is inspired by my desire to provide an easy-to-use offline option for my mother with her older family photos. The name is derived from the title of an episode of the wonderful British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
+TimeSlide is a prototype application concept to balance the ease of applying machine-learning "de-oldifying" (colorizing and up-sampling) old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use offline option for my mother with her older family photos. The name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
 
-Much thanks to all the hard work by the [deoldify](https://github.com/jantic/DeOldify) project.
+TimeSlide is just pretty packaging (or an attempt of it). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project.
 
 ## Setup
 
-Run the bootstrap file which will clone deoldify, download the colorizing model, and install all python requirements.
+In macOS, ensure you have a [homebrew](https://brew.sh)ed version of Python 3.7 installed (*not* 3.8) and linked in your path, then run the bootstrap file which will clone deoldify, download the colorizing models, and install all python requirements in a virtual environment.
 
 ```
 source bootstrap.sh
@@ -27,15 +27,18 @@ python timeslide.py
 Double check the file `timeslide.spec` in case any paths require modification. Then, in macOS, run
 
 ```
-source bundle_macos.sh
+source bundle.sh
 ```
 
 ## Useful Links
 
+If you don't immediately have old black-and-white photos but want to test TimeSlide, here are some useful websites:
+
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
+- [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 
 ## Notes
 
 - timeslide is very preliminary; lots of ideas on features to add
 - image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions
-- tested so far only on macOS, Python 3.7 installed with homebrew
+- tested so far only on macOS, Python 3.7 installed with [homebrew](https://brew.sh)
