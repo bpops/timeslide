@@ -22,7 +22,7 @@ Just run the python script
 python timeslide.py
 ```
 
-## Bundle (not yet working!)
+## Bundle
 
 Double check the file `timeslide.spec` in case any paths require modification. Then, in macOS, run
 
