@@ -35,4 +35,7 @@ exe = EXE(pyz,
 app = BUNDLE(exe,
              name='timeslide.app',
              icon=None,
-             bundle_identifier=None)
+             bundle_identifier=None,
+             info_plist={
+                 'NSHighResolutionCapable': 'True'
+             },)
