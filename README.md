@@ -1,4 +1,4 @@
-# TimeSlide
+![TimeSlide](./imgs/logo.png)
 
 __a super-simple gui to slide old photographs into TODAY__
 
