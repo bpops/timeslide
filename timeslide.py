@@ -37,6 +37,63 @@ import os
 import urllib.request
 import io
 
+# tooltips
+# credit https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
+class CreateToolTip(object):
+    """
+    create a tooltip for a given widget
+    """
+    def __init__(self, widget, text='widget info'):
+        self.waittime = 500     #miliseconds
+        self.wraplength = 240   #pixels
+        self.widget = widget
+        self.text = text
+        self.widget.bind("<Enter>", self.enter)
+        self.widget.bind("<Leave>", self.leave)
+        self.widget.bind("<ButtonPress>", self.leave)
+        self.id = None
+        self.tw = None
+
+    def enter(self, event=None):
+        self.schedule()
+
+    def leave(self, event=None):
+        self.unschedule()
+        self.hidetip()
+
+    def schedule(self):
+        self.unschedule()
+        self.id = self.widget.after(self.waittime, self.showtip)
+
+    def unschedule(self):
+        id = self.id
+        self.id = None
+        if id:
+            self.widget.after_cancel(id)
+
+    def showtip(self, event=None):
+        x = y = 0
+        x, y, cx, cy = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 20
+        self.hidetip()
+        # creates a toplevel window
+        self.tw = tk.Toplevel(self.widget)
+        # Leaves only the label and removes the app window
+        self.tw.wm_overrideredirect(True)
+        self.tw.wm_geometry("+%d+%d" % (x, y))
+        label = tk.Label(self.tw, text=self.text, justify='left',
+                       background="#ffffff", relief='solid', borderwidth=1,
+                       wraplength = self.wraplength)
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tw
+        self.tw= None
+        if tw:
+            tw.destroy()
+
+
 # canvas
 canv_width  = 500
 canv_height = 400
@@ -128,7 +185,7 @@ class Window(tk.Frame):
             from_=min_rndr_fctr, to=max_rndr_fctr, orient="horizontal",
             length=150, bg=bg_color)
         self.scale_rf.pack(side=tk.RIGHT, fill="x")
-        self.scale_rf.set(30)
+        self.scale_rf.set(35)
         label_rf = ttk.Label(frame_colorize, text="Render Factor: ",
             background=bg_color)
         label_rf.pack(sid=tk.RIGHT)
@@ -150,6 +207,26 @@ class Window(tk.Frame):
             command=self.save_file)
         self.btn_save_photo['state'] = 'disabled'
         self.btn_save_photo.pack(side=tk.LEFT)
+
+        # TOOLTIPS
+
+        # colorize tooltip
+        CreateToolTip(chk_colorize, \
+            "If checked, will colorize the image using the deoldify project, "
+            "using their pre-trained model weights.")
+
+        # colorize model tooltip
+        CreateToolTip(model_label, \
+            "Artistic: More colorful.\n"
+            "Stable: Not as colorful, but fewer glitches.\n"
+            "According to De-oldify, Stable should be used for landscapes"
+            " and portraits; Artistic otherwise.")
+
+        # render factor tooltip
+        CreateToolTip(label_rf, \
+            "According to De-oldify, older images tend to benefit from a "
+            "lower render factor (which is faster). Newer images tend to "
+            "benefit from a higher render factor.")
 
     # open file
     def open_file(self):
