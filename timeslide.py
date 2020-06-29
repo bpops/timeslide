@@ -37,7 +37,6 @@ import shutil
 import os
 import urllib.request
 import io
-import time
 
 # tooltip class
 # credit https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
