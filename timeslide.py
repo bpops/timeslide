@@ -327,7 +327,8 @@ class Window(tk.Frame):
         file_types = [
             ('Image files', '*.jpg *.jpeg')
         ]
-        save_file = tk.filedialog.asksaveasfile(filetypes = file_types)
+        save_file = tk.filedialog.asksaveasfile(filetypes = file_types,
+            defaultextension=".jpg")
         from_path = str(os.getcwd()) + "/" + str(self.result_path)
         print(from_path)
         print(save_file.name)
