@@ -31,13 +31,15 @@ torch.backends.cudnn.benchmark = True
 import tkinter as tk
 import tkinter.filedialog
 from tkinter import ttk
+import threading
 from PIL import Image, ImageTk
 import shutil
 import os
 import urllib.request
 import io
+import time
 
-# tooltips
+# tooltip class
 # credit https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
 class CreateToolTip(object):
     """
@@ -93,7 +95,6 @@ class CreateToolTip(object):
         if tw:
             tw.destroy()
 
-
 # canvas
 canv_width  = 500
 canv_height = 400
@@ -134,6 +135,14 @@ class Window(tk.Frame):
             anchor='se')
         self.canvas.pack()
 
+        # FRAME - status
+
+        frame_status = tk.LabelFrame(self,
+            text="Status", pady=4, bg=bg_color)
+        frame_status.pack(fill="x", padx=4)
+        self.label_status = ttk.Label(frame_status, text="Welcome to TimeSlide.", background=bg_color)
+        self.label_status.pack(side=tk.LEFT)
+
         # FRAME - load old photo
 
         frame_load = tk.LabelFrame(self,
@@ -145,7 +154,7 @@ class Window(tk.Frame):
             command=self.open_file)
         btn_open_photo.pack(side=tk.LEFT)
         label_or = ttk.Label(frame_load, text="  or  ", background=bg_color)
-        label_or.pack(sid=tk.LEFT, padx=22)
+        label_or.pack(side=tk.LEFT, padx=22)
         
         # load_url button
         btn_load_url = ttk.Button(frame_load, text="Load URL",
@@ -197,6 +206,8 @@ class Window(tk.Frame):
         frame_finish.pack(fill="x", padx=4)
        
         # timeslide button
+        #self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
+        #    command=run_func_with_loading_popup(self, self.timeslide, 'Calculating...'))
         self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
             command=self.timeslide)
         self.btn_timeslide['state'] = 'disabled'
@@ -243,6 +254,9 @@ class Window(tk.Frame):
         self.canvas.img_tk = ImageTk.PhotoImage(img)
         self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
 
+        # set status
+        self.label_status.config(text="Old photo loaded from file.")
+
         # enable timeslide button
         self.btn_timeslide['state'] = 'normal'
 
@@ -259,6 +273,9 @@ class Window(tk.Frame):
         self.canvas.img_tk = ImageTk.PhotoImage(img)
         self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
 
+        # set status
+        self.label_status.config(text="Old photo loaded from URL.")
+
         # enable timeslide button
         self.btn_timeslide['state'] = 'normal'
 
@@ -270,6 +287,10 @@ class Window(tk.Frame):
 
         # do colorization
         if (self.colorize_int.get() == 1):
+
+            # set status
+            self.label_status.config(text="Colorizing...")
+            self.update()
 
             # determine colorizer model
             if (self.model_vars.get() == "Artistic"):
@@ -297,6 +318,9 @@ class Window(tk.Frame):
         else:
             pass
 
+        # set status to complete
+        self.label_status.config(text="Time Slide complete.")
+
         # enable save button
         self.btn_save_photo['state'] = 'normal'
 
@@ -316,7 +340,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix584" % canv_width)
+root.geometry("%ix630" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
