@@ -6,6 +6,8 @@ TimeSlide is a prototype concept to balance the ease of applying machine-learnin
 
 TimeSlide is just pretty packaging (or an attempt of it). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project, torch developers, tkinter developers, and all the other enabling technologies.
 
+__Importantly, TimeSlide targets macOS.__
+
 ## Setup for Development
 
 In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8) with `brew install python3`. Ensure it is linked in your path (`brew link python3`). You can always double-check that this is the correct version: `python --version` should show 3.7.
