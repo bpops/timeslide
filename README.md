@@ -33,7 +33,7 @@ source bundle.sh
 
 With this, pyinstaller will bundle the app, including all necessary python modules and dynamic libraries. It will be bundled into a single `.app` bundle (as well as a binary executable) under the `dist` folder. Additionally, the bash script will copy over the icon files into the `.app` file.
 
-We recommend you then comporess the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
+We recommend you then compress the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
 
 ## Running the Bundled macOS App
 
@@ -60,5 +60,5 @@ If you don't immediately have old black-and-white photos but want to test TimeSl
 
 - TimeSlide is very preliminary; lots of ideas on features to add.
 - Image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions.
-- Tested so far only on macOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh)
+- Tested so far only on macOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh).
 - URL loading has known bugs. Load from file preferred.

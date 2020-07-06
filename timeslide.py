@@ -141,7 +141,7 @@ class Window(tk.Frame):
             text="Status", pady=4, bg=bg_color)
         frame_status.pack(fill="x", padx=4)
         self.label_status = ttk.Label(frame_status, text="Welcome to TimeSlide.", background=bg_color)
-        self.label_status.pack(side=tk.LEFT)
+        self.label_status.pack(side=tk.LEFT, padx=120)
 
         # FRAME - load old photo
 
@@ -255,7 +255,7 @@ class Window(tk.Frame):
         self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
 
         # set status
-        self.label_status.config(text="Old photo loaded from file.")
+        self.label_status.config(text="Old photo loaded from local file.")
 
         # enable timeslide button
         self.btn_timeslide['state'] = 'normal'
@@ -289,7 +289,7 @@ class Window(tk.Frame):
         if (self.colorize_int.get() == 1):
 
             # set status
-            self.label_status.config(text="Colorizing...")
+            self.label_status.config(text="Colorizing. Please stand by...")
             self.update()
 
             # determine colorizer model
@@ -319,7 +319,7 @@ class Window(tk.Frame):
             pass
 
         # set status to complete
-        self.label_status.config(text="Time Slide complete.")
+        self.label_status.config(text="TimeSlide complete!")
 
         # enable save button
         self.btn_save_photo['state'] = 'normal'
