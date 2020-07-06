@@ -2,7 +2,6 @@
 
 block_cipher = None
 
-
 a = Analysis(['timeslide.py'],
              pathex=['.'],
              binaries=[],
@@ -23,8 +22,8 @@ a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
 a.binaries = a.binaries + TOC([('libpng16.16.dylib', 
     '/usr/local/Cellar/libpng/1.6.37/lib/libpng16.16.dylib', 'BINARY')])
 
-pyz = PYZ(a.pure, a.zipped_data,
-             cipher=block_cipher)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
@@ -39,10 +38,11 @@ exe = EXE(pyz,
           upx_exclude=[],
           runtime_tmpdir=None,
           console=False )
+
 app = BUNDLE(exe,
              name='timeslide.app',
              icon=None,
              bundle_identifier=None,
              info_plist={
-                 'NSHighResolutionCapable': 'True'
+                 'NSHighResolutionCapable': 'True', # remove blurriness
              },)
