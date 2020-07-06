@@ -37,6 +37,7 @@ import shutil
 import os
 import urllib.request
 import io
+import numpy as np
 
 # tooltip class
 # credit https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
@@ -114,7 +115,7 @@ class Window(tk.Frame):
         self.load_method=None
 
         # setup
-        self.master.title("TimeSlide v0.1")
+        self.master.title("TimeSlide v0.2")
         self.pack(fill=tk.BOTH, expand=1)
 
         # creating a menu instance

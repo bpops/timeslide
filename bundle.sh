@@ -9,3 +9,6 @@ pyinstaller timeslide.spec
 # convert icons, and bundle
 iconutil -c icns -o imgs/icon-windowed.icns imgs/icon.iconset
 mv imgs/icon-windowed.icns dist/timeslide.app/Contents/Resources/.
+
+# rename app
+mv dist/timeslide.app dist/TimeSlide.app
