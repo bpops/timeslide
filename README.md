@@ -58,7 +58,31 @@ If you don't immediately have old black-and-white photos but want to test TimeSl
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
 - [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 
-## Notes
+## Release Notes
+
+### v0.1 (2020.05.08)
+
+- first working version
+- colorize-capable (and optional)
+- render factor selection on colorize
+- load from local file or url
+- gui layout to guide user
+
+### v0.2 (2020.06.05)
+
+- `.jpg` now default when saving
+- status updates now providied during procedure
+- tooltips now help guide user
+- blurry text in macOS resolved
+- dedicated icon
+- stable model + artistic model both included
+- app can now be fully bundled for macOS
+
+### v0.3 (in progress)
+
+...
+
+## Additional (Current)
 
 - TimeSlide is very preliminary; lots of ideas on features to add.
 - Image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions.
