@@ -41,8 +41,8 @@ Please note that distributing the application to others will require that they e
 
 1. Press `⌘` + `SPACEBAR`.
 2. Type `term`. When the Terminal.app shows, click it (or hit `ENTER`).
-3. In the window, type `sudo spctl --master-disable` (note double hyphens before `master`.)
-4. Enter password as required.
+3. In the window, type `sudo spctl --master-disable` (note double hyphens before `master`), hit `ENTER`.
+4. Enter password as required, hit `ENTER`.
 5. Open System Preferences.
 6. Click "Security and Privacy." Make sure you're on the "General" tab.
 7. Click the lock at the bottom left, and enter password.
