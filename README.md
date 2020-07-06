@@ -51,16 +51,9 @@ Please note that distributing the application to others will require that they e
 8. Under "Allow apps downloaded from," ensure that "Anywhere" is selected.
 9. Close System Preferences and double-click the TimeSlide app to run.
 
-## Useful Links
-
-If you don't immediately have old black-and-white photos but want to test TimeSlide, here are some useful websites:
-
-- [the way we were](https://www.reddit.com/r/TheWayWeWere/)
-- [library of congress free-to-use](https://www.loc.gov/free-to-use/)
-
 ## Release Notes
 
-### v0.1 (2020.05.08)
+### v0.1 (2020.06.08)
 
 - first working version
 - colorize-capable (and optional)
@@ -68,10 +61,10 @@ If you don't immediately have old black-and-white photos but want to test TimeSl
 - load from local file or url
 - gui layout to guide user
 
-### v0.2 (2020.06.05)
+### v0.2 (2020.07.05)
 
 - `.jpg` now default when saving
-- status updates now providied during procedure
+- status updates now provided during procedure
 - tooltips now help guide user
 - blurry text in macOS resolved
 - dedicated icon
@@ -81,6 +74,13 @@ If you don't immediately have old black-and-white photos but want to test TimeSl
 ### v0.3 (in progress)
 
 ...
+
+## Useful Links
+
+If you don't immediately have old black-and-white photos but want to test TimeSlide, here are some useful websites:
+
+- [the way we were](https://www.reddit.com/r/TheWayWeWere/)
+- [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 
 ## Additional (Current)
 
