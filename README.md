@@ -2,22 +2,27 @@
 
 __a super-simple gui to slide old photographs into TODAY__
 
-TimeSlide is a prototype concept to balance the ease of applying machine-learning "de-oldifying" (colorizing and, eventually, up-sampling) of old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use offline option for my mother with her older family and ancestral photos. The name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
+TimeSlide is a prototype concept to balance the ease of applying machine-learning colorizing--and eventually, up-sampling--of old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use *offline* option for my mother with her older family and ancestral photos. The app name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
 
-TimeSlide is just pretty packaging (or an attempt of it). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project, torch developers, tkinter developers, and all the other enabling technologies.
+TimeSlide is just pretty packaging (or an attempt of it, I'm a newb). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project, torch developers, tkinter developers, and all the other enabling technologies provided by selfless contributors to both the open source and free software communities. 
 
-__Importantly, TimeSlide targets macOS.__
+__Importantly, TimeSlide targets macOS.__ Currently, since it is based solely on python modules, you could certainly bundle a Windows application. But no support on that procedure is provided herein (though you're welcome to figure it out yourself and submit a PR).
 
 ## Setup for Development
 
-In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8) with `brew install python3`. Ensure it is linked in your path (`brew link python3`). You can always double-check that this is the correct version: `python --version` should show 3.7.
+In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8, since Pyinstaller is not compatible) with `brew install python3`. Link it in your path (`brew link python3`; might not be necessary).
+
+Ensure that your `python` command is correctly linked to the homebrew version:
+``realpath `which python` ``.
+
+Also verify here that it is python 3.7, or else just run `python --version` to confirm.
 
 Next, run the bootstrap file which will clone deoldify, download the colorizing models, and install all python requirements in a virtual environment.
 ```
 source bootstrap.sh
 ```
 
-## Execute TimeSlide
+## Execute TimeSlide for Development
 
 After activating the python virtual environment (`source venv/bin/activate`), simply run the python script:
 ```
@@ -77,12 +82,12 @@ Please note that distributing the application to others will require that they e
 
 ## Useful Links
 
-If you don't immediately have old black-and-white photos but want to test TimeSlide, here are some useful websites:
+If you just want to test out TimeSlide but don't have black-and-white photos available, here are some nice resources:
 
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
 - [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 
-## Additional (Current)
+## (Current) Additional Notes
 
 - TimeSlide is very preliminary; lots of ideas on features to add.
 - Image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions.
