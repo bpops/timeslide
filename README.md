@@ -36,11 +36,7 @@ Please note that distributing the application to others will require that they e
 
 1. Press COMMAND + SPACEBAR
 2. Type `term`. When the Termina.app shows, click it (or hit ENTER).
-3. In the window, type
-```
-sudo spctl --master-disable
-```
-(Please note double hypens before `master`.)
+3. In the window, type `sudo spctl --master-disable` (Please note double hypens before `master`.)
 4. Enter password as required.
 5. Open System Preferences.
 6. Click "Security and Privacy." Make sure you're on the "General" tab.
