@@ -14,8 +14,6 @@ a = Analysis(['timeslide.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-#a.binaries = a.binaries - TOC([('libfreetype.6.dylib',None,None)])
-#a.binaries = a.binaries - TOC([('libbluray.2.dylib',None,None)])
 
 # libpng
 a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
