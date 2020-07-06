@@ -8,7 +8,7 @@ TimeSlide is just pretty packaging (or an attempt of it). The hard work is by th
 
 ## Setup for Development
 
-In MacOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8) with `brew install python3`. Ensure it is linked in your path (`brew link python3`). You can always double-check that this is the correct version: `python --version` should show 3.7.
+In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8) with `brew install python3`. Ensure it is linked in your path (`brew link python3`). You can always double-check that this is the correct version: `python --version` should show 3.7.
 
 Next, run the bootstrap file which will clone deoldify, download the colorizing models, and install all python requirements in a virtual environment.
 ```
@@ -22,7 +22,7 @@ After activating the python virtual environment (`source venv/bin/activate`), si
 python timeslide.py
 ```
 
-## Bundle for MacOS
+## Bundle for macOS
 
 Since the whole point of TimeSlide is ease of use, we require a solution for bundling the app that can be distributed to others. To do this, first open the file `timeslide.spec` and ensure that the path to your homebrew (Cellar'ed) version of `libpng16.16.dylib` is correct (slight modifications may be necessary depending on version number.) 
 
@@ -35,9 +35,9 @@ With this, pyinstaller will bundle the app, including all necessary python modul
 
 We recommend you then comporess the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
 
-## Running the Bundled MacOS App
+## Running the Bundled macOS App
 
-Please note that distributing the application to others will require that they enable unidentified developer apps to run on any somewhat recent version of MacOS. This can be done by providing those users with the following instructions.
+Please note that distributing the application to others will require that they enable unidentified developer apps to run on any somewhat recent version of macOS. This can be done by providing those users with the following instructions.
 
 1. Press `⌘` + `SPACEBAR`.
 2. Type `term`. When the Terminal.app shows, click it (or hit `ENTER`).
@@ -60,5 +60,5 @@ If you don't immediately have old black-and-white photos but want to test TimeSl
 
 - TimeSlide is very preliminary; lots of ideas on features to add.
 - Image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions.
-- Tested so far only on MacOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh)
+- Tested so far only on macOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh)
 - URL loading has known bugs. Load from file preferred.
