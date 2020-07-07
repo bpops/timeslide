@@ -199,9 +199,32 @@ class Window(tk.Frame):
             background=bg_color)
         label_rf.pack(sid=tk.RIGHT)
 
+
+        # FRAME - enhance
+
+        frame_enhance = tk.LabelFrame(self, text="Step 3: Enhance (Up-sample)",
+            pady=4, bg=bg_color)
+        frame_enhance.pack(fill="x", padx=4)
+
+        # enhance check box
+        self.enhance_int = tk.IntVar()
+        self.enhance_int.set(1)
+        chk_enhance = ttk.Checkbutton(frame_enhance, text="Enhance",
+            variable=self.enhance_int, offvalue=0, onvalue=1)
+        chk_enhance.pack(side=tk.LEFT)
+       
+        # enhance model dropdown
+        self.weights_vars = tk.StringVar(frame_enhance)
+        self.weights_vars.set("EDSRx4")
+        weights_label = tk.Label(frame_enhance, text='Weights:', bg=bg_color)
+        weights_label.pack(side=tk.LEFT, padx=(15,0))
+        self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
+            "EDSRx4",)
+        self.weights_model.pack(side=tk.LEFT, padx=0)
+
         # FRAME - finish
 
-        frame_finish = tk.LabelFrame(self, text="Step 3: Finish Up",
+        frame_finish = tk.LabelFrame(self, text="Step 4: Finish Up",
             pady=4, bg=bg_color)
         frame_finish.pack(fill="x", padx=4)
        
@@ -341,7 +364,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix630" % canv_width)
+root.geometry("%ix730" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
