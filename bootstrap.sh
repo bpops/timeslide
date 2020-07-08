@@ -21,6 +21,15 @@ ln -s super-resolution/demo demo
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1xjyW_0dDS4jSTxKVZwtlkyfS4Oso-GUF' -O weights-edsr-16-x4.tar.gz
 tar -xzf weights-edsr-16-x4.tar.gz
 rm weights-edsr-16-x4.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1JfQNGQZ9cG-lyC5EB0W3MpySjPlDJXpU' -O weights-wdsr-b-32-x4.tar.gz
+tar -xzf weights-wdsr-b-32-x4.tar.gz
+rm weights-wdsr-b-32-x4.tar.gz
+# TODO: srgan file is too large to download this way
+#wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1u9ituA3ScttN9Vi-UkALmpO0dWQLm8Rv' -O weights-srgan.tar.gz
+#tar -xzf weights-srgan.tar.gz
+#rm weights-srgan.tar.gz
+
+https://drive.google.com/open?id=1u9ituA3ScttN9Vi-UkALmpO0dWQLm8Rv
 
 # python venv
 rm -fr venv

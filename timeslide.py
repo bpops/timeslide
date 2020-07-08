@@ -27,12 +27,21 @@ device.set(device = DeviceId.GPU0)
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 
-# other modules
+# set up super-resolution
+import matplotlib.pyplot as plt
+from data import DIV2K
+from model.edsr import edsr
+from model.wdsr import wdsr_b
+from model import resolve_single
+from utils import load_image, plot_sample
+
+# import other modules
 import tkinter as tk
 import tkinter.filedialog
 from tkinter import ttk
 import threading
 from PIL import Image, ImageTk
+import tensorflow as tf
 import shutil
 import os
 import urllib.request
@@ -40,14 +49,16 @@ import io
 import numpy as np
 
 # tooltip class
-# credit https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
+# CREDIT: https://stackoverflow.com/questions/3221956/
+#         how-do-i-display-tooltips-in-tkinter
 class CreateToolTip(object):
     """
     create a tooltip for a given widget
     """
+
     def __init__(self, widget, text='widget info'):
-        self.waittime = 500     #miliseconds
-        self.wraplength = 240   #pixels
+        self.waittime = 500     # milliseconds
+        self.wraplength = 240   # pixels
         self.widget = widget
         self.text = text
         self.widget.bind("<Enter>", self.enter)
@@ -173,7 +184,7 @@ class Window(tk.Frame):
 
         # colorize check box
         self.colorize_int = tk.IntVar()
-        self.colorize_int.set(1)
+        self.colorize_int.set(0) # change back!
         chk_colorize = ttk.Checkbutton(frame_colorize, text="Colorize",
             variable=self.colorize_int, offvalue=0, onvalue=1)
         chk_colorize.pack(side=tk.LEFT)
@@ -199,7 +210,6 @@ class Window(tk.Frame):
             background=bg_color)
         label_rf.pack(sid=tk.RIGHT)
 
-
         # FRAME - enhance
 
         frame_enhance = tk.LabelFrame(self, text="Step 3: Enhance (Up-sample)",
@@ -216,10 +226,10 @@ class Window(tk.Frame):
         # enhance model dropdown
         self.weights_vars = tk.StringVar(frame_enhance)
         self.weights_vars.set("EDSRx4")
-        weights_label = tk.Label(frame_enhance, text='Weights:', bg=bg_color)
+        weights_label = tk.Label(frame_enhance, text='Model:', bg=bg_color)
         weights_label.pack(side=tk.LEFT, padx=(15,0))
         self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
-            "EDSRx4",)
+            "EDSRx4", "WDSRx4")
         self.weights_model.pack(side=tk.LEFT, padx=0)
 
         # FRAME - finish
@@ -334,12 +344,66 @@ class Window(tk.Frame):
                     url=self.str_url.get("1.0",tk.END), path='//tmp/tmp.png',
                     render_factor = render_factor, compare = False)
             img = Image.open(self.result_path)
+
+            # display to canvas
             img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
             self.canvas.img_tk = ImageTk.PhotoImage(img)
             self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+            self.update()
 
-        else:
-            pass
+        # do enhancement
+        if (self.enhance_int.get() == 1):
+
+            # set status
+            self.label_status.config(text="Enhancing. Please stand by...")
+            self.update()
+
+            # determine which file we're reading
+            if (self.colorize_int.get() == 1):
+                filepath = self.result_path
+            else:
+                filepath = self.file_path
+
+            # open file
+            img = load_image(filepath)
+
+            # EDSRx4 model
+            if (self.weights_vars.get() == "EDSRx4"):
+                depth = 16
+                scale = 4
+                weights_dir = f'weights/edsr-{depth}-x{scale}'
+                weights_file = os.path.join(weights_dir, 'weights.h5')
+                os.makedirs(weights_dir, exist_ok=True)
+                
+                model = edsr(scale=scale, num_res_blocks=depth)
+                model.load_weights(weights_file)
+                img = resolve_single(model, img)
+
+            # WDSRx4 model
+            if (self.weights_vars.get() == "WDSRx4"):
+                depth = 32
+                scale = 4
+                weights_dir = f'weights/wdsr-b-{depth}-x{scale}'
+                weights_file = os.path.join(weights_dir, 'weights.h5')
+                os.makedirs(weights_dir, exist_ok=True)
+                
+                model = wdsr_b(scale=scale, num_res_blocks=depth)
+                model.load_weights(weights_file)
+                img = resolve_single(model, img)
+
+            # save result to file
+            img = tf.keras.preprocessing.image.array_to_img(img)
+            if (self.colorize_int.get() == 1):
+                img.save(self.result_path)
+            else:
+                img.save('./tmp_enhance.png')
+                self.result_path = './tmp_enhance.png'
+
+            # display to canvas
+            img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
+            self.canvas.img_tk = ImageTk.PhotoImage(img)
+            self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+            self.update()
 
         # set status to complete
         self.label_status.config(text="TimeSlide complete!")
@@ -351,11 +415,11 @@ class Window(tk.Frame):
         file_types = [
             ('Image files', '*.jpg *.jpeg')
         ]
+        print("WWWWWWUUUUUUUTTTTT")
+        print(str(self.result_path))
         save_file = tk.filedialog.asksaveasfile(filetypes = file_types,
             defaultextension=".jpg")
         from_path = str(os.getcwd()) + "/" + str(self.result_path)
-        print(from_path)
-        print(save_file.name)
         shutil.copyfile(from_path, save_file.name)
 
     # exit
@@ -364,7 +428,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix730" % canv_width)
+root.geometry("%ix686" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
