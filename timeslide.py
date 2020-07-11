@@ -126,7 +126,7 @@ class Window(tk.Frame):
         self.load_method=None
 
         # setup
-        self.master.title("TimeSlide v0.2")
+        self.master.title("TimeSlide v0.3")
         self.pack(fill=tk.BOTH, expand=1)
 
         # creating a menu instance
@@ -277,6 +277,11 @@ class Window(tk.Frame):
             "Enhance should ONLY be used on very small images. It is memory "
             "intensive to the point that it will max out your RAM, and then "
             "start filling your hard drive, and take forever!")
+
+        # enhance model tooltip
+        CreateToolTip(weights_label, \
+            "Both weights are 4x in each dimension (will create image x16 "
+            "larger).")
 
     # open file
     def open_file(self):
