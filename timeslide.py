@@ -31,7 +31,7 @@ torch.backends.cudnn.benchmark = True
 import matplotlib.pyplot as plt
 from data import DIV2K
 from model.edsr import edsr
-from model.wdsr import wdsr_b
+from model.wdsr import wdsr_b, wdsr_a
 from model import resolve_single
 from utils import load_image, plot_sample
 
@@ -184,7 +184,7 @@ class Window(tk.Frame):
 
         # colorize check box
         self.colorize_int = tk.IntVar()
-        self.colorize_int.set(0) # change back!
+        self.colorize_int.set(1)
         chk_colorize = ttk.Checkbutton(frame_colorize, text="Colorize",
             variable=self.colorize_int, offvalue=0, onvalue=1)
         chk_colorize.pack(side=tk.LEFT)
@@ -218,7 +218,7 @@ class Window(tk.Frame):
 
         # enhance check box
         self.enhance_int = tk.IntVar()
-        self.enhance_int.set(1)
+        self.enhance_int.set(0)
         chk_enhance = ttk.Checkbutton(frame_enhance, text="Enhance",
             variable=self.enhance_int, offvalue=0, onvalue=1)
         chk_enhance.pack(side=tk.LEFT)
@@ -271,6 +271,12 @@ class Window(tk.Frame):
             "According to De-oldify, older images tend to benefit from a "
             "lower render factor (which is faster). Newer images tend to "
             "benefit from a higher render factor.")
+
+        # enhance tooltip
+        CreateToolTip(chk_enhance, \
+            "Enhance should ONLY be used on very small images. It is memory "
+            "intensive to the point that it will max out your RAM, and then "
+            "start filling your hard drive, and take forever!")
 
     # open file
     def open_file(self):
@@ -396,8 +402,8 @@ class Window(tk.Frame):
             if (self.colorize_int.get() == 1):
                 img.save(self.result_path)
             else:
-                img.save('./tmp_enhance.png')
-                self.result_path = './tmp_enhance.png'
+                img.save('./tmp_enhance.jpg')
+                self.result_path = './tmp_enhance.jpg'
 
             # display to canvas
             img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
@@ -413,9 +419,8 @@ class Window(tk.Frame):
 
     def save_file(self):
         file_types = [
-            ('Image files', '*.jpg *.jpeg')
+            ('Image files', '*.jpg *.jpeg'),
         ]
-        print("WWWWWWUUUUUUUTTTTT")
         print(str(self.result_path))
         save_file = tk.filedialog.asksaveasfile(filetypes = file_types,
             defaultextension=".jpg")
