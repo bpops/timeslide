@@ -111,6 +111,26 @@ class CreateToolTip(object):
         if tw:
             tw.destroy()
 
+# ef slider callback
+value_list_lo = [2, 3, 4]
+value_list_hi = [2, 4, 8]
+def ef_slider_callback(value):
+    if app.weights_vars.get() in "LapSRN":
+        this_list = value_list_hi
+    else:
+        this_list = value_list_lo
+    newvalue = min(this_list, key=lambda x:abs(x-float(value)))
+    app.scale_ef.set(newvalue)
+
+# ef model callback
+def ef_weights_callback(value):
+    if value in "LapSRN":
+        app.scale_ef.configure(from_=min(value_list_hi), to=max(value_list_hi))
+        app.scale_ef.set(min(value_list_hi))        
+    else:
+        app.scale_ef.configure(from_=min(value_list_lo), to=max(value_list_lo))
+        app.scale_ef.set(min(value_list_lo))
+
 # canvas
 canv_width  = 500
 canv_height = 400
@@ -234,15 +254,14 @@ class Window(tk.Frame):
         weights_label = tk.Label(frame_enhance, text='Model:', bg=bg_color)
         weights_label.pack(side=tk.LEFT, padx=(15,0))
         self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
-            "EDSR", "ESPCN", "FSRCNN", "LapSRN")
+            "EDSR", "ESPCN", "FSRCNN", "LapSRN", command=ef_weights_callback)
         self.weights_model.pack(side=tk.LEFT, padx=0)
 
         # enhance multiplier
-        min_enhance_factor = 2
-        max_enhance_factor = 4
         self.scale_ef = tk.Scale(frame_enhance,
-            from_=min_enhance_factor, to=max_enhance_factor, orient="horizontal",
-            length=150, bg=bg_color)
+            from_=min(value_list_lo), to=max(value_list_lo),
+            orient="horizontal",
+            length=150, bg=bg_color, command=ef_slider_callback)
         self.scale_ef.pack(side=tk.RIGHT, fill="x")
         self.scale_ef.set(2)
         label_ef = ttk.Label(frame_enhance, text="Multiplier: ",
@@ -397,15 +416,11 @@ class Window(tk.Frame):
                 filepath = self.result_path
             else:
                 filepath = self.file_path
-            print("FILEPATH")
-            print(filepath)
-            print(self.result_path)
 
             # Create an SR object
             sr = dnn_superres.DnnSuperResImpl_create()
 
             # Read image
-            #help(filepath)
             image = cv2.imread(str(filepath))
 
             # Read the desired model, enhance factor
@@ -413,6 +428,9 @@ class Window(tk.Frame):
             enhance_factor = int(self.scale_ef.get())
             path = "models/%s_x%i.pb" % (model, enhance_factor)
             sr.readModel(path)
+
+            print(model)
+            print(enhance_factor)
 
             # Set the desired model and scale to get correct pre- and post-processing
             sr.setModel(model.lower(), enhance_factor)
