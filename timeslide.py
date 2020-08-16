@@ -28,12 +28,16 @@ from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 
 # set up super-resolution
-import matplotlib.pyplot as plt
-from data import DIV2K
-from model.edsr import edsr
-from model.wdsr import wdsr_b, wdsr_a
-from model import resolve_single
-from utils import load_image, plot_sample
+#import matplotlib.pyplot as plt
+#from data import DIV2K
+#from model.edsr import edsr
+#from model.wdsr import wdsr_b, wdsr_a
+#from model import resolve_single
+#from utils import load_image, plot_sample
+
+# set up image enhance
+import cv2
+from cv2 import dnn_superres
 
 # import other modules
 import tkinter as tk
@@ -47,6 +51,7 @@ import os
 import urllib.request
 import io
 import numpy as np
+import time
 
 # tooltip class
 # CREDIT: https://stackoverflow.com/questions/3221956/
@@ -225,12 +230,24 @@ class Window(tk.Frame):
        
         # enhance model dropdown
         self.weights_vars = tk.StringVar(frame_enhance)
-        self.weights_vars.set("EDSRx4")
+        self.weights_vars.set("EDSR")
         weights_label = tk.Label(frame_enhance, text='Model:', bg=bg_color)
         weights_label.pack(side=tk.LEFT, padx=(15,0))
         self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
-            "EDSRx4", "WDSRx4")
+            "EDSR", "ESPCN", "FSRCNN", "LapSRN")
         self.weights_model.pack(side=tk.LEFT, padx=0)
+
+        # enhance multiplier
+        min_enhance_factor = 2
+        max_enhance_factor = 4
+        self.scale_ef = tk.Scale(frame_enhance,
+            from_=min_enhance_factor, to=max_enhance_factor, orient="horizontal",
+            length=150, bg=bg_color)
+        self.scale_ef.pack(side=tk.RIGHT, fill="x")
+        self.scale_ef.set(2)
+        label_ef = ttk.Label(frame_enhance, text="Multiplier: ",
+            background=bg_color)
+        label_ef.pack(sid=tk.RIGHT)
 
         # FRAME - finish
 
@@ -280,8 +297,14 @@ class Window(tk.Frame):
 
         # enhance model tooltip
         CreateToolTip(weights_label, \
-            "Both weights are 4x in each dimension (will create image x16 "
-            "larger).")
+            "EDSR is best performance, but is the slowest. ESPCN and FSRCNN"
+            " are small, fast models. LapSRN is a medium-sized model, that "
+            "can go up to 8x.")
+
+        # enhance factor tooltip
+        CreateToolTip(label_ef, \
+            "This value is the multiplied factor for each dimension of"
+            " the photo.")
 
     # open file
     def open_file(self):
@@ -329,7 +352,7 @@ class Window(tk.Frame):
     # timeslide
     def timeslide(self):
 
-        # do colorization
+        # colorization
         if (self.colorize_int.get() == 1):
 
             # set status
@@ -374,47 +397,74 @@ class Window(tk.Frame):
                 filepath = self.result_path
             else:
                 filepath = self.file_path
+            print("FILEPATH")
+            print(filepath)
+            print(self.result_path)
 
-            # open file
-            img = load_image(filepath)
+            # Create an SR object
+            sr = dnn_superres.DnnSuperResImpl_create()
 
-            # EDSRx4 model
-            if (self.weights_vars.get() == "EDSRx4"):
-                depth = 16
-                scale = 4
-                weights_dir = f'weights/edsr-{depth}-x{scale}'
-                weights_file = os.path.join(weights_dir, 'weights.h5')
-                os.makedirs(weights_dir, exist_ok=True)
+            # Read image
+            #help(filepath)
+            image = cv2.imread(str(filepath))
+
+            # Read the desired model, enhance factor
+            model = self.weights_vars.get()
+            enhance_factor = int(self.scale_ef.get())
+            path = "models/%s_x%i.pb" % (model, enhance_factor)
+            sr.readModel(path)
+
+            # Set the desired model and scale to get correct pre- and post-processing
+            sr.setModel(model.lower(), enhance_factor)
+
+            # Upscale the image
+            result = sr.upsample(image)
+
+            # Save the image
+            self.result_path = './tmp_enhance.jpg'
+            cv2.imwrite(self.result_path, result)
                 
-                model = edsr(scale=scale, num_res_blocks=depth)
-                model.load_weights(weights_file)
-                img = resolve_single(model, img)
-
-            # WDSRx4 model
-            if (self.weights_vars.get() == "WDSRx4"):
-                depth = 32
-                scale = 4
-                weights_dir = f'weights/wdsr-b-{depth}-x{scale}'
-                weights_file = os.path.join(weights_dir, 'weights.h5')
-                os.makedirs(weights_dir, exist_ok=True)
-                
-                model = wdsr_b(scale=scale, num_res_blocks=depth)
-                model.load_weights(weights_file)
-                img = resolve_single(model, img)
-
-            # save result to file
-            img = tf.keras.preprocessing.image.array_to_img(img)
-            if (self.colorize_int.get() == 1):
-                img.save(self.result_path)
-            else:
-                img.save('./tmp_enhance.jpg')
-                self.result_path = './tmp_enhance.jpg'
-
             # display to canvas
+            img = Image.open(self.result_path)
             img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
             self.canvas.img_tk = ImageTk.PhotoImage(img)
             self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
             self.update()
+
+            # open file
+            #img = load_image(filepath)
+
+            # EDSRx4 model
+            #if (self.weights_vars.get() == "EDSRx4"):
+            #    depth = 16
+            #    scale = 4
+            #    weights_dir = f'weights/edsr-{depth}-x{scale}'
+            #    weights_file = os.path.join(weights_dir, 'weights.h5')
+            #    os.makedirs(weights_dir, exist_ok=True)
+            #    
+            #    model = edsr(scale=scale, num_res_blocks=depth)
+            #    model.load_weights(weights_file)
+            #    img = resolve_single(model, img)
+
+            # WDSRx4 model
+            #if (self.weights_vars.get() == "WDSRx4"):
+            #    depth = 32
+            #    scale = 4
+            #    weights_dir = f'weights/wdsr-b-{depth}-x{scale}'
+            #    weights_file = os.path.join(weights_dir, 'weights.h5')
+            #    os.makedirs(weights_dir, exist_ok=True)
+            #    
+            #    model = wdsr_b(scale=scale, num_res_blocks=depth)
+            #    model.load_weights(weights_file)
+            #    img = resolve_single(model, img)
+
+            # save result to file
+            #img = tf.keras.preprocessing.image.array_to_img(img)
+            #if (self.colorize_int.get() == 1):
+            #    img.save(self.result_path)
+            #else:
+            #    img.save('./tmp_enhance.jpg')
+            #    self.result_path = './tmp_enhance.jpg'
 
         # set status to complete
         self.label_status.config(text="TimeSlide complete!")
