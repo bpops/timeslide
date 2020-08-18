@@ -20,6 +20,11 @@ a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
 a.binaries = a.binaries + TOC([('libpng16.16.dylib', 
     '/usr/local/Cellar/libpng/1.6.37/lib/libpng16.16.dylib', 'BINARY')])
 
+# opencv2-contrib
+#a.binaries = a.binaries - TOC([('cv2.cpython-37m-darwin.so',None,None)])
+#a.binaries = a.binaries + TOC([('cv2.cpython-37m-darwin.so', 
+#    'venv/lib/python3.7/site-packages/cv2/cv2.cpython-37m-darwin.so', 'BINARY')])
+
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(pyz,
