@@ -132,8 +132,8 @@ def ef_weights_callback(value):
         app.scale_ef.set(min(value_list_lo))
 
 # canvas
-canv_width  = 500
-canv_height = 400
+canv_width  = 640
+canv_height = 440
 bg_color    = "#ECECEC"
 
 class Window(tk.Frame):
@@ -228,7 +228,7 @@ class Window(tk.Frame):
         max_rndr_fctr = 45
         self.scale_rf = tk.Scale(frame_colorize,
             from_=min_rndr_fctr, to=max_rndr_fctr, orient="horizontal",
-            length=150, bg=bg_color)
+            length=250, bg=bg_color)
         self.scale_rf.pack(side=tk.RIGHT, fill="x")
         self.scale_rf.set(35)
         label_rf = ttk.Label(frame_colorize, text="Render Factor: ",
@@ -261,7 +261,7 @@ class Window(tk.Frame):
         self.scale_ef = tk.Scale(frame_enhance,
             from_=min(value_list_lo), to=max(value_list_lo),
             orient="horizontal",
-            length=150, bg=bg_color, command=ef_slider_callback)
+            length=250, bg=bg_color, command=ef_slider_callback)
         self.scale_ef.pack(side=tk.RIGHT, fill="x")
         self.scale_ef.set(2)
         label_ef = ttk.Label(frame_enhance, text="Multiplier: ",
@@ -506,7 +506,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix686" % canv_width)
+root.geometry("%ix738" % canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
