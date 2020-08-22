@@ -13,7 +13,7 @@
 import os, sys
 os.environ["PYTORCH_JIT"] = "0"
 
-# to be used for dev vs bundled paths
+# used for dev vs bundled paths
 try:
    wd = sys._MEIPASS
 except AttributeError:
@@ -135,6 +135,9 @@ def ef_weights_callback(value):
 canv_width  = 640
 canv_height = 440
 bg_color    = "#ECECEC"
+
+# determine canvas ratio
+canv_ratio = canv_width / canv_height
 
 class Window(tk.Frame):
 
@@ -325,6 +328,39 @@ class Window(tk.Frame):
             "This value is the multiplied factor for each dimension of"
             " the photo.")
 
+    # show image
+    def show_image(self, img):
+
+        # determine image size
+        img_size = img.size
+        img_width  = img_size[0]
+        img_height = img_size[1]
+        img_ratio = img_width / img_height
+
+        # resize
+        if canv_ratio > img_ratio:
+            new_img_height = canv_height
+            new_img_width  = int(img_width * new_img_height / img_height)
+        else:
+            new_img_width = canv_width
+            new_img_height = int(img_height * new_img_width / canv_width)
+        img_new = img.resize((new_img_width,new_img_height))
+
+        # remake canvas
+        self.image_id = self.canvas.create_image(canv_width, canv_height,
+            anchor='se')
+        self.canvas.pack()
+
+        # display to canvas
+        self.canvas.img_tk = ImageTk.PhotoImage(img_new)
+        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+
+        # move image
+        move_x = -int((canv_width-new_img_width)/2.0)
+        move_y = -int((canv_height-new_img_height)/2.0)
+        self.canvas.move(self.image_id, move_x, move_y)
+        self.update()
+
     # open file
     def open_file(self):
 
@@ -334,11 +370,9 @@ class Window(tk.Frame):
         ]
         self.file_path = tk.filedialog.askopenfilename(filetypes=file_types)
         
-        # open image and resize
+        # open image
         img = Image.open(self.file_path)
-        img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
-        self.canvas.img_tk = ImageTk.PhotoImage(img)
-        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+        self.show_image(img)
 
         # set status
         self.label_status.config(text="Old photo loaded from local file.")
@@ -355,9 +389,7 @@ class Window(tk.Frame):
         # load raw data and display
         raw_data = urllib.request.urlopen(self.str_url.get("1.0",tk.END)).read()
         img = Image.open(io.BytesIO(raw_data))
-        img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
-        self.canvas.img_tk = ImageTk.PhotoImage(img)
-        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+        self.show_image(img)
 
         # set status
         self.label_status.config(text="Old photo loaded from URL.")
@@ -399,11 +431,8 @@ class Window(tk.Frame):
             img = Image.open(self.result_path)
 
             # display to canvas
-            img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
-            self.canvas.img_tk = ImageTk.PhotoImage(img)
-            self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
-            self.update()
-
+            self.show_image(img)
+            
         # do enhancement
         if (self.enhance_int.get() == 1):
 
@@ -429,9 +458,6 @@ class Window(tk.Frame):
             path = "models/%s_x%i.pb" % (model, enhance_factor)
             sr.readModel(path)
 
-            print(model)
-            print(enhance_factor)
-
             # Set the desired model and scale to get correct pre- and post-processing
             sr.setModel(model.lower(), enhance_factor)
 
@@ -444,46 +470,8 @@ class Window(tk.Frame):
                 
             # display to canvas
             img = Image.open(self.result_path)
-            img = img.resize((canv_width, canv_height), Image.ANTIALIAS)
-            self.canvas.img_tk = ImageTk.PhotoImage(img)
-            self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
-            self.update()
-
-            # open file
-            #img = load_image(filepath)
-
-            # EDSRx4 model
-            #if (self.weights_vars.get() == "EDSRx4"):
-            #    depth = 16
-            #    scale = 4
-            #    weights_dir = f'weights/edsr-{depth}-x{scale}'
-            #    weights_file = os.path.join(weights_dir, 'weights.h5')
-            #    os.makedirs(weights_dir, exist_ok=True)
-            #    
-            #    model = edsr(scale=scale, num_res_blocks=depth)
-            #    model.load_weights(weights_file)
-            #    img = resolve_single(model, img)
-
-            # WDSRx4 model
-            #if (self.weights_vars.get() == "WDSRx4"):
-            #    depth = 32
-            #    scale = 4
-            #    weights_dir = f'weights/wdsr-b-{depth}-x{scale}'
-            #    weights_file = os.path.join(weights_dir, 'weights.h5')
-            #    os.makedirs(weights_dir, exist_ok=True)
-            #    
-            #    model = wdsr_b(scale=scale, num_res_blocks=depth)
-            #    model.load_weights(weights_file)
-            #    img = resolve_single(model, img)
-
-            # save result to file
-            #img = tf.keras.preprocessing.image.array_to_img(img)
-            #if (self.colorize_int.get() == 1):
-            #    img.save(self.result_path)
-            #else:
-            #    img.save('./tmp_enhance.jpg')
-            #    self.result_path = './tmp_enhance.jpg'
-
+            self.show_image(img)
+        
         # set status to complete
         self.label_status.config(text="TimeSlide complete!")
 
