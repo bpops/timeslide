@@ -85,6 +85,7 @@ Please note that distributing the application to others will require that they e
 ### v0.4 (in progress)
 - default window width enlarged for better viewing
 - image now maintains aspect ratio correctly in canvas
+- dropdown menus now have correct background color
 
 ## Useful Links
 
@@ -96,8 +97,6 @@ If you just want to test out TimeSlide but don't have black-and-white photos ava
 
 ## (Current) Additional Notes
 
-- TimeSlide is very preliminary; lots of ideas on features to add.
-- Image size and aspect ratio in window are just for display; the saved image will be correct resolution and proportions.
 - Tested so far only on macOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh).
 - URL loading has known bugs. Load from file preferred.
 - For myself: I need to fix this or understand it better, but for now, I need to make sure that the correct modules are installed in the python package with which I installed PyInstaller. So run `pip3.7 install ...` before doing any bundling.
