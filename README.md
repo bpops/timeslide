@@ -82,7 +82,7 @@ Please note that distributing the application to others will require that they e
 - new enhancement frame (including tooltips)
 - enhancement allows for 4 models, 3 multiplicative factors each
 
-### v0.4 (2020.xx.xx)
+### v0.4 (in progress)
 - default window width enlarged for better viewing
 - image now maintains aspect ratio correctly in canvas
 
