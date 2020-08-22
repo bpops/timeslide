@@ -2,13 +2,13 @@
 
 __a super-simple gui to slide old photographs into TODAY__
 
-TimeSlide is a prototype concept to balance the ease of applying machine-learning colorizing--and eventually, up-sampling--of old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use *offline* option for my mother with her older family and ancestral photos. The app name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
+TimeSlide is a prototype concept to balance the ease of applying machine-learning colorizing and up-sampling of old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use *offline* option for my mother with her older family and ancestral photos. The goal is to give the people a secure and easy way to make your old photos look gorgeous. The application name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
 
 ![TimeSlide Screenshot](./imgs/timeslide_screenshot.png)
 
-TimeSlide is just pretty packaging (or an attempt of it, I'm a newb). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project, torch developers, tkinter developers, and all the other enabling technologies provided by selfless contributors to both the open source and free software communities. 
+TimeSlide is really just pretty packaging (or an attempt of it, I'm a newb). The hard work is by the [deoldify](https://github.com/jantic/DeOldify) project, torch developers, opencv developers, tkinter developers, and all the other enabling technologies provided by selfless contributors to both the open source and free software communities. 
 
-__Importantly, TimeSlide targets macOS.__ Currently, since it is based solely on python modules, you could certainly bundle a Windows application. But no support on that procedure is provided herein (though you're welcome to figure it out yourself and submit a PR).
+__Importantly, TimeSlide targets macOS.__ Currently, since it is based solely on python modules, you could certainly bundle a Windows application. But no support on that procedure is provided herein (though you're welcome to figure it out yourself and submit a PR). I haven't gone through all licenses yet and so do not provide a "release" here. But the instructions for bundling/packaging a distribution yourself is provided herein.
 
 ## Setup for Development
 
