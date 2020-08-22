@@ -135,6 +135,7 @@ def ef_weights_callback(value):
 canv_width  = 640
 canv_height = 440
 bg_color    = "#ECECEC"
+fg_color    = "#000000"
 
 # determine canvas ratio
 canv_ratio = canv_width / canv_height
@@ -224,6 +225,7 @@ class Window(tk.Frame):
         model_label.pack(side=tk.LEFT, padx=(15,0))
         self.colorize_model = tk.OptionMenu(frame_colorize, self.model_vars,
             "Stable", "Artistic")
+        self.colorize_model.config(bg=bg_color)
         self.colorize_model.pack(side=tk.LEFT, padx=0)
         
         # colorize render factor
@@ -258,6 +260,7 @@ class Window(tk.Frame):
         weights_label.pack(side=tk.LEFT, padx=(15,0))
         self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
             "EDSR", "ESPCN", "FSRCNN", "LapSRN", command=ef_weights_callback)
+        self.weights_model.config(bg=bg_color)
         self.weights_model.pack(side=tk.LEFT, padx=0)
 
         # enhance multiplier
