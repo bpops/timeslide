@@ -82,6 +82,10 @@ Please note that distributing the application to others will require that they e
 - new enhancement frame (including tooltips)
 - enhancement allows for 4 models, 3 multiplicative factors each
 
+### v0.4 (2020.xx.xx)
+- default window width enlarged for better viewing
+- image now maintains aspect ratio correctly in canvas
+
 ## Useful Links
 
 If you just want to test out TimeSlide but don't have black-and-white photos available, here are some nice resources:
