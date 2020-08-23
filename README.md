@@ -12,12 +12,22 @@ __Importantly, TimeSlide targets macOS.__ Currently, since it is based solely on
 
 ## Setup for Development
 
-In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8, since Pyinstaller is not compatible) with `brew install python3`. Link it in your path (`brew link python3`; might not be necessary).
+In macOS, install [homebrew](https://brew.sh). Then, use it to install Python 3.7 (*not* 3.8, since Pyinstaller is not compatible) with 
+```
+brew install python@3.7
+```
 
-Ensure that your `python` command is correctly linked to the homebrew version:
-``realpath `which python` ``.
+Link it in your path with 
+```
+echo 'export PATH="/usr/local/opt/python@3.7/bin:$PATH"' >> ~/.zshrc
+```
 
-Also verify here that it is python 3.7, or else just run `python --version` to confirm.
+Ensure that the `python3` command is correctly inked to the homebrew version with
+```
+which python3
+```
+
+Also verify here that it is python 3.7, or else just run `python3 --version` to confirm.
 
 Next, run the bootstrap file which will clone deoldify, download the colorizing models, and install all python requirements in a virtual environment.
 ```
