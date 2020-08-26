@@ -27,14 +27,6 @@ device.set(device = DeviceId.GPU0)
 from deoldify.visualize import *
 torch.backends.cudnn.benchmark = True
 
-# set up super-resolution
-#import matplotlib.pyplot as plt
-#from data import DIV2K
-#from model.edsr import edsr
-#from model.wdsr import wdsr_b, wdsr_a
-#from model import resolve_single
-#from utils import load_image, plot_sample
-
 # set up image enhance
 import cv2
 from cv2 import dnn_superres
@@ -168,48 +160,60 @@ class Window(tk.Frame):
         file.add_command(label="Exit", command=self.client_exit)
         menu.add_cascade(label="File", menu=file)
 
-        # image canvas
-        self.canvas = tk.Canvas(self, width=canv_width, height=canv_height,
-            background='black')
-        self.image_id = self.canvas.create_image(canv_width, canv_height,
-            anchor='se')
-        self.canvas.pack()
+        # FRAME - finish
+        frame_finish = tk.LabelFrame(self, text="Step 4: Finish Up",
+            pady=4, bg=bg_color)
+        frame_finish.pack(fill="x", padx=4, side=tk.BOTTOM)
+       
+        # timeslide button
+        self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
+            command=self.timeslide)
+        self.btn_timeslide['state'] = 'disabled'
+        self.btn_timeslide.pack(side=tk.LEFT)
 
-        # FRAME - status
+        # save as button
+        self.btn_save_photo = ttk.Button(frame_finish, text="Save New Photo...",
+            command=self.save_file)
+        self.btn_save_photo['state'] = 'disabled'
+        self.btn_save_photo.pack(side=tk.LEFT)
 
-        frame_status = tk.LabelFrame(self,
-            text="Status", pady=4, bg=bg_color)
-        frame_status.pack(fill="x", padx=4)
-        self.label_status = ttk.Label(frame_status, text="Welcome to TimeSlide.", background=bg_color)
-        self.label_status.pack(side=tk.LEFT, padx=120)
+        # FRAME - enhance
+        frame_enhance = tk.LabelFrame(self, text="Step 3: Enhance (Up-sample)",
+            pady=4, bg=bg_color)
+        frame_enhance.pack(fill="x", padx=4, side=tk.BOTTOM)
 
-        # FRAME - load old photo
+        # enhance check box
+        self.enhance_int = tk.IntVar()
+        self.enhance_int.set(0)
+        chk_enhance = ttk.Checkbutton(frame_enhance, text="Enhance",
+            variable=self.enhance_int, offvalue=0, onvalue=1)
+        chk_enhance.pack(side=tk.LEFT)
+       
+        # enhance model dropdown
+        self.weights_vars = tk.StringVar(frame_enhance)
+        self.weights_vars.set("EDSR")
+        weights_label = tk.Label(frame_enhance, text='Model:', bg=bg_color)
+        weights_label.pack(side=tk.LEFT, padx=(15,0))
+        self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
+            "EDSR", "ESPCN", "FSRCNN", "LapSRN", command=ef_weights_callback)
+        self.weights_model.config(bg=bg_color)
+        self.weights_model.pack(side=tk.LEFT, padx=0)
 
-        frame_load = tk.LabelFrame(self,
-            text="Step 1: Load Old Black-and-White Photo", pady=4, bg=bg_color)
-        frame_load.pack(fill="x", padx=4)
-        
-        # open_file button
-        btn_open_photo = ttk.Button(frame_load, text="Open Local Photo...",
-            command=self.open_file)
-        btn_open_photo.pack(side=tk.LEFT)
-        label_or = ttk.Label(frame_load, text="  or  ", background=bg_color)
-        label_or.pack(side=tk.LEFT, padx=22)
-        
-        # load_url button
-        btn_load_url = ttk.Button(frame_load, text="Load URL",
-            command=self.load_url)
-        btn_load_url.pack(side=tk.RIGHT)
-        
-        # url_string
-        self.str_url = tk.Text(frame_load, width=40, height=1)
-        self.str_url.pack(side=tk.RIGHT, padx=4)
+        # enhance multiplier
+        self.scale_ef = tk.Scale(frame_enhance,
+            from_=min(value_list_lo), to=max(value_list_lo),
+            orient="horizontal",
+            length=250, bg=bg_color, command=ef_slider_callback)
+        self.scale_ef.pack(side=tk.RIGHT, fill="x")
+        self.scale_ef.set(2)
+        label_ef = ttk.Label(frame_enhance, text="Multiplier: ",
+            background=bg_color)
+        label_ef.pack(sid=tk.RIGHT)
 
         # FRAME - colorize
-
         frame_colorize = tk.LabelFrame(self, text="Step 2: Colorize",
             pady=4, bg=bg_color)
-        frame_colorize.pack(fill="x", padx=4)
+        frame_colorize.pack(fill="x", padx=4, side=tk.BOTTOM)
 
         # colorize check box
         self.colorize_int = tk.IntVar()
@@ -240,59 +244,40 @@ class Window(tk.Frame):
             background=bg_color)
         label_rf.pack(sid=tk.RIGHT)
 
-        # FRAME - enhance
+        # FRAME - load old photo
+        frame_load = tk.LabelFrame(self,
+            text="Step 1: Load Old Black-and-White Photo", pady=4, bg=bg_color)
+        frame_load.pack(fill="x", padx=4, side=tk.BOTTOM)
+        
+        # open_file button
+        btn_open_photo = ttk.Button(frame_load, text="Open Local Photo...",
+            command=self.open_file)
+        btn_open_photo.pack(side=tk.LEFT)
+        label_or = ttk.Label(frame_load, text="  or  ", background=bg_color)
+        label_or.pack(side=tk.LEFT, padx=22)
+        
+        # load_url button
+        btn_load_url = ttk.Button(frame_load, text="Load URL",
+            command=self.load_url)
+        btn_load_url.pack(side=tk.RIGHT)
+        
+        # url_string
+        self.str_url = tk.Text(frame_load, width=40, height=1)
+        self.str_url.pack(side=tk.RIGHT, padx=4)
 
-        frame_enhance = tk.LabelFrame(self, text="Step 3: Enhance (Up-sample)",
-            pady=4, bg=bg_color)
-        frame_enhance.pack(fill="x", padx=4)
+        # FRAME - status
+        frame_status = tk.LabelFrame(self,
+            text="Status", pady=4, bg=bg_color)
+        frame_status.pack(fill="x", padx=4, side=tk.BOTTOM)
+        self.label_status = ttk.Label(frame_status, text="Welcome to TimeSlide.", background=bg_color)
+        self.label_status.pack(fill="x", padx=120)
 
-        # enhance check box
-        self.enhance_int = tk.IntVar()
-        self.enhance_int.set(0)
-        chk_enhance = ttk.Checkbutton(frame_enhance, text="Enhance",
-            variable=self.enhance_int, offvalue=0, onvalue=1)
-        chk_enhance.pack(side=tk.LEFT)
-       
-        # enhance model dropdown
-        self.weights_vars = tk.StringVar(frame_enhance)
-        self.weights_vars.set("EDSR")
-        weights_label = tk.Label(frame_enhance, text='Model:', bg=bg_color)
-        weights_label.pack(side=tk.LEFT, padx=(15,0))
-        self.weights_model = tk.OptionMenu(frame_enhance, self.weights_vars,
-            "EDSR", "ESPCN", "FSRCNN", "LapSRN", command=ef_weights_callback)
-        self.weights_model.config(bg=bg_color)
-        self.weights_model.pack(side=tk.LEFT, padx=0)
-
-        # enhance multiplier
-        self.scale_ef = tk.Scale(frame_enhance,
-            from_=min(value_list_lo), to=max(value_list_lo),
-            orient="horizontal",
-            length=250, bg=bg_color, command=ef_slider_callback)
-        self.scale_ef.pack(side=tk.RIGHT, fill="x")
-        self.scale_ef.set(2)
-        label_ef = ttk.Label(frame_enhance, text="Multiplier: ",
-            background=bg_color)
-        label_ef.pack(sid=tk.RIGHT)
-
-        # FRAME - finish
-
-        frame_finish = tk.LabelFrame(self, text="Step 4: Finish Up",
-            pady=4, bg=bg_color)
-        frame_finish.pack(fill="x", padx=4)
-       
-        # timeslide button
-        #self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
-        #    command=run_func_with_loading_popup(self, self.timeslide, 'Calculating...'))
-        self.btn_timeslide = ttk.Button(frame_finish, text="Slide Time!",
-            command=self.timeslide)
-        self.btn_timeslide['state'] = 'disabled'
-        self.btn_timeslide.pack(side=tk.LEFT)
-
-        # save as button
-        self.btn_save_photo = ttk.Button(frame_finish, text="Save New Photo...",
-            command=self.save_file)
-        self.btn_save_photo['state'] = 'disabled'
-        self.btn_save_photo.pack(side=tk.LEFT)
+        # image canvas
+        self.canvas = tk.Canvas(self, width=canv_width, height=canv_height,
+            background='black')
+        self.image_id = self.canvas.create_image(canv_width, canv_height,
+            anchor='se')
+        self.canvas.pack(side=tk.BOTTOM)
 
         # TOOLTIPS
 
