@@ -22,6 +22,11 @@ Link it in your path with
 echo 'export PATH="/usr/local/opt/python@3.7/bin:$PATH"' >> ~/.zshrc
 ```
 
+You may also need to install `wget` with brew:
+```
+brew install wget
+```
+
 Ensure that the `python3` command is correctly inked to the homebrew version with
 ```
 which python3
@@ -29,7 +34,7 @@ which python3
 
 Also verify here that it is python 3.7, or else just run `python3 --version` to confirm.
 
-Next, run the bootstrap file which will clone deoldify, download the colorizing models, and install all python requirements in a virtual environment.
+Next, run the bootstrap file which will clone deoldify, download the colorizing models, download the opencv (up-sampling) models, install `libgpng` through homebrew, and install all python requirements in a virtual environment. Edit it as required, then run
 ```
 source bootstrap.sh
 ```
@@ -50,13 +55,13 @@ Next, in terminal, run:
 source bundle.sh
 ```
 
-With this, pyinstaller will bundle the app, including all necessary python modules and dynamic libraries. It will be bundled into a single `.app` bundle (as well as a binary executable) under the `dist` folder. Additionally, the bash script will copy over the icon files into the `.app` file.
+With this, pyinstaller will bundle the app, including all necessary python modules and dynamic libraries. It will be bundled into a single `.app` bundle (as well as a binary executable) under the `dist` folder. Additionally, the bash script will copy over the icon files into the `.app` file. I recommend running the binary executable first to troubleshoot, as you'll be able to see any errors that occur. 
 
-We recommend you then compress the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
+I also recommend you then compress the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
 
 ## Running the Bundled macOS App
 
-Please note that distributing the application to others will require that they enable unidentified developer apps to run on any somewhat recent version of macOS. This can be done by providing those users with the following instructions.
+Please note that distributing the application to others will require that they enable unidentified developer apps (one-time procedure) to run on any somewhat recent version of macOS. This can be done by providing those users with the following instructions.
 
 1. Press `⌘` + `SPACEBAR`.
 2. Type `term`. When the Terminal.app shows, click it (or hit `ENTER`).
