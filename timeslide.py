@@ -386,7 +386,7 @@ class Window(tk.Frame):
             new_img_width  = int(img_width * new_img_height / img_height)
         else:
             new_img_width = canv_width
-            new_img_height = int(img_height * new_img_width / canv_width)
+            new_img_height = int(img_height * new_img_width / img_width)
         img_new = self.img_base.resize((new_img_width,new_img_height))
 
         # remake canvas
