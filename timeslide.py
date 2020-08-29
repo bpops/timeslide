@@ -149,7 +149,7 @@ class Window(tk.Frame):
         self.img_base = None
 
         # setup
-        self.master.title("TimeSlide v0.3")
+        self.master.title("TimeSlide v0.4")
         self.pack(fill=tk.BOTH, expand=True)
 
         # creating a menu instance

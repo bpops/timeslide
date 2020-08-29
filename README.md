@@ -75,13 +75,18 @@ Please note that distributing the application to others will require that they e
 
 ## Release Notes
 
-### v0.1 (2020.06.08)
+### v0.4 (2020.08.28)
+- default window width enlarged for better viewing
+- image now maintains aspect ratio correctly in canvas
+- resizing window now resizes canvas and image!
+- dropdown menus now have correct background color
+- removed many unncessary python modules from bundle
+- window now will start in center of the screen
+- app will no longer fail when user cancels load file
 
-- first working version
-- colorize-capable (and optional)
-- render factor selection on colorize
-- load from local file or url
-- gui layout to guide user
+### v0.3 (2020.08.17)
+- new enhancement frame (including tooltips)
+- enhancement allows for 4 models, 3 multiplicative factors each
 
 ### v0.2 (2020.07.05)
 
@@ -93,14 +98,13 @@ Please note that distributing the application to others will require that they e
 - stable model + artistic model both included
 - app can now be fully bundled for macOS
 
-### v0.3 (2020.08.17)
-- new enhancement frame (including tooltips)
-- enhancement allows for 4 models, 3 multiplicative factors each
+### v0.1 (2020.06.08)
 
-### v0.4 (in progress)
-- default window width enlarged for better viewing
-- image now maintains aspect ratio correctly in canvas
-- dropdown menus now have correct background color
+- first working version
+- colorize-capable (and optional)
+- render factor selection on colorize
+- load from local file or url
+- gui layout to guide user
 
 ## Useful Links
 
