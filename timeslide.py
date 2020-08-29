@@ -411,18 +411,20 @@ class Window(tk.Frame):
         ]
         self.file_path = tk.filedialog.askopenfilename(filetypes=file_types)
         
-        # open image
-        self.img_base = Image.open(self.file_path)
-        self.show_image()
+        if not self.file_path == '': # account for cancelled modal
 
-        # set status
-        self.label_status.config(text="Old photo loaded from local file.")
+            # open image
+            self.img_base = Image.open(self.file_path)
+            self.show_image()
 
-        # enable timeslide button
-        self.btn_timeslide['state'] = 'normal'
+            # set status
+            self.label_status.config(text="Old photo loaded from local file.")
 
-        # set load method
-        self.load_method="open_file"
+            # enable timeslide button
+            self.btn_timeslide['state'] = 'normal'
+
+            # set load method
+            self.load_method="open_file"
 
     # load from url
     def load_url(self):
