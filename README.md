@@ -113,9 +113,3 @@ If you just want to test out TimeSlide but don't have black-and-white photos ava
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
 - [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 - [pexels: black and white](https://www.pexels.com/search/black%20and%20white/)
-
-## (Current) Additional Notes
-
-- Tested so far only on macOS Catalina (10.15.5), Python 3.7 installed with [homebrew](https://brew.sh).
-- URL loading has known bugs. Load from file preferred.
-- For myself: I need to fix this or understand it better, but for now, I need to make sure that the correct modules are installed in the python package with which I installed PyInstaller. So run `pip3.7 install ...` before doing any bundling.
