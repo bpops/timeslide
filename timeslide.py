@@ -145,7 +145,7 @@ class Window(tk.Frame):
 
         # load_method = (None, "open_file", "load_url")
         self.load_method = None
-        self.img = None
+        self.img_base = None
 
         # setup
         self.master.title("TimeSlide v0.3")
@@ -324,41 +324,43 @@ class Window(tk.Frame):
     # show image
     def resize_image(self, event):
 
-        # delete previous canvas image
-        self.canvas.delete("all")
+        if not self.img_base is None:
 
-        # determine canvas height
-        canv_height = self.canvas.winfo_height()
-        canv_width  = self.canvas.winfo_width()
-        canv_ratio = canv_width / canv_height
+            # delete previous canvas image
+            self.canvas.delete("all")
 
-        # determine image size
-        #self.img = Image.open(self.file_path)
-        img_size = self.img_base.size
-        img_width  = img_size[0]
-        img_height = img_size[1]
-        img_ratio = img_width / img_height
+            # determine canvas height
+            canv_height = self.canvas.winfo_height()
+            canv_width  = self.canvas.winfo_width()
+            canv_ratio = canv_width / canv_height
 
-        # resize
-        if canv_ratio > img_ratio:
-            new_img_height = canv_height
-            new_img_width  = int(img_width * new_img_height / img_height)
-        else:
-            new_img_width = canv_width
-            new_img_height = int(img_height * new_img_width / img_width)
-        img_new = self.img_base.resize((new_img_width,new_img_height))
+            # determine image size
+            #self.img = Image.open(self.file_path)
+            img_size = self.img_base.size
+            img_width  = img_size[0]
+            img_height = img_size[1]
+            img_ratio = img_width / img_height
 
-        # remake image
-        self.image_id = self.canvas.create_image(canv_width, canv_height,
-            anchor='se')
-        self.canvas.img_tk = ImageTk.PhotoImage(img_new)
-        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+            # resize
+            if canv_ratio > img_ratio:
+                new_img_height = canv_height
+                new_img_width  = int(img_width * new_img_height / img_height)
+            else:
+                new_img_width = canv_width
+                new_img_height = int(img_height * new_img_width / img_width)
+            img_new = self.img_base.resize((new_img_width,new_img_height))
 
-        # pack and reposition
-        self.canvas.pack()
-        move_x = -int((canv_width-new_img_width)/2.0)
-        move_y = -int((canv_height-new_img_height)/2.0)
-        self.canvas.move(self.image_id, move_x, move_y)
+            # remake image
+            self.image_id = self.canvas.create_image(canv_width, canv_height,
+                anchor='se')
+            self.canvas.img_tk = ImageTk.PhotoImage(img_new)
+            self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+
+            # pack and reposition
+            self.canvas.pack()
+            move_x = -int((canv_width-new_img_width)/2.0)
+            move_y = -int((canv_height-new_img_height)/2.0)
+            self.canvas.move(self.image_id, move_x, move_y)
 
     # show image
     def show_image(self):
