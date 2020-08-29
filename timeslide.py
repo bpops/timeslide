@@ -126,6 +126,7 @@ def ef_weights_callback(value):
 # canvas
 init_canv_width  = 640
 init_canv_height = 440
+init_win_height  = 738
 bg_color    = "#ECECEC"
 fg_color    = "#000000"
 
@@ -537,11 +538,21 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix738" % init_canv_width)
+root.geometry("%ix%i" % (init_canv_width, init_win_height))
 root.configure(bg=bg_color)
 
 # creation of an instance
 app = Window(root)
+
+# center window
+app.update_idletasks()
+win_width   = root.winfo_reqwidth()
+win_height  = init_win_height
+scrn_width  = root.winfo_screenwidth()
+scrn_height = root.winfo_screenheight()
+x = (scrn_width//2) - (win_width//2)
+y = (scrn_height//2) - (win_height//2)
+root.geometry('{}x{}+{}+{}'.format(win_width, win_height, x, y))
 
 # bring window to front
 root.lift()
