@@ -124,13 +124,13 @@ def ef_weights_callback(value):
         app.scale_ef.set(min(value_list_lo))
 
 # canvas
-canv_width  = 640
-canv_height = 440
+init_canv_width  = 640
+init_canv_height = 440
 bg_color    = "#ECECEC"
 fg_color    = "#000000"
 
 # determine canvas ratio
-canv_ratio = canv_width / canv_height
+#canv_ratio = canv_width / canv_height
 
 class Window(tk.Frame):
 
@@ -144,11 +144,12 @@ class Window(tk.Frame):
     def init_window(self):
 
         # load_method = (None, "open_file", "load_url")
-        self.load_method=None
+        self.load_method = None
+        self.img = None
 
         # setup
         self.master.title("TimeSlide v0.3")
-        self.pack(fill=tk.BOTH, expand=1)
+        self.pack(fill=tk.BOTH, expand=True)
 
         # creating a menu instance
         menu = tk.Menu(self.master)
@@ -178,6 +179,7 @@ class Window(tk.Frame):
         self.btn_save_photo.pack(side=tk.LEFT)
 
         # FRAME - enhance
+
         frame_enhance = tk.LabelFrame(self, text="Step 3: Enhance (Up-sample)",
             pady=4, bg=bg_color)
         frame_enhance.pack(fill="x", padx=4, side=tk.BOTTOM)
@@ -211,6 +213,7 @@ class Window(tk.Frame):
         label_ef.pack(sid=tk.RIGHT)
 
         # FRAME - colorize
+
         frame_colorize = tk.LabelFrame(self, text="Step 2: Colorize",
             pady=4, bg=bg_color)
         frame_colorize.pack(fill="x", padx=4, side=tk.BOTTOM)
@@ -245,6 +248,7 @@ class Window(tk.Frame):
         label_rf.pack(sid=tk.RIGHT)
 
         # FRAME - load old photo
+
         frame_load = tk.LabelFrame(self,
             text="Step 1: Load Old Black-and-White Photo", pady=4, bg=bg_color)
         frame_load.pack(fill="x", padx=4, side=tk.BOTTOM)
@@ -266,6 +270,7 @@ class Window(tk.Frame):
         self.str_url.pack(side=tk.RIGHT, padx=4)
 
         # FRAME - status
+        
         frame_status = tk.LabelFrame(self,
             text="Status", pady=4, bg=bg_color)
         frame_status.pack(fill="x", padx=4, side=tk.BOTTOM)
@@ -273,11 +278,11 @@ class Window(tk.Frame):
         self.label_status.pack(fill="x", padx=120)
 
         # image canvas
-        self.canvas = tk.Canvas(self, width=canv_width, height=canv_height,
-            background='black')
-        self.image_id = self.canvas.create_image(canv_width, canv_height,
-            anchor='se')
-        self.canvas.pack(side=tk.BOTTOM)
+        self.canvas = tk.Canvas(self, background='black')
+        self.canvas.bind("<Configure>", self.resize_image)
+        self.image_id = self.canvas.create_image(init_canv_width,
+            init_canv_height, anchor='se')
+        self.canvas.pack(fill="both", side=tk.BOTTOM, expand=True)
 
         # TOOLTIPS
 
@@ -317,10 +322,57 @@ class Window(tk.Frame):
             " the photo.")
 
     # show image
-    def show_image(self, img):
+    def resize_image(self, event):
+
+        # delete previous canvas image
+        self.canvas.delete("all")
+
+        # determine canvas height
+        canv_height = self.canvas.winfo_height()
+        canv_width  = self.canvas.winfo_width()
+        canv_ratio = canv_width / canv_height
 
         # determine image size
-        img_size = img.size
+        #self.img = Image.open(self.file_path)
+        img_size = self.img_base.size
+        img_width  = img_size[0]
+        img_height = img_size[1]
+        img_ratio = img_width / img_height
+
+        # resize
+        if canv_ratio > img_ratio:
+            new_img_height = canv_height
+            new_img_width  = int(img_width * new_img_height / img_height)
+        else:
+            new_img_width = canv_width
+            new_img_height = int(img_height * new_img_width / img_width)
+        img_new = self.img_base.resize((new_img_width,new_img_height))
+
+        # remake image
+        self.image_id = self.canvas.create_image(canv_width, canv_height,
+            anchor='se')
+        self.canvas.img_tk = ImageTk.PhotoImage(img_new)
+        self.canvas.itemconfig(self.image_id, image=self.canvas.img_tk)
+
+        # pack and reposition
+        self.canvas.pack()
+        move_x = -int((canv_width-new_img_width)/2.0)
+        move_y = -int((canv_height-new_img_height)/2.0)
+        self.canvas.move(self.image_id, move_x, move_y)
+
+    # show image
+    def show_image(self):
+
+        # delete previous canvas image
+        self.canvas.delete("all")
+
+        # determine canvas height
+        canv_height = self.canvas.winfo_height()
+        canv_width  = self.canvas.winfo_width()
+        canv_ratio = canv_width / canv_height
+
+        # determine image size
+        img_size = self.img_base.size
         img_width  = img_size[0]
         img_height = img_size[1]
         img_ratio = img_width / img_height
@@ -332,7 +384,7 @@ class Window(tk.Frame):
         else:
             new_img_width = canv_width
             new_img_height = int(img_height * new_img_width / canv_width)
-        img_new = img.resize((new_img_width,new_img_height))
+        img_new = self.img_base.resize((new_img_width,new_img_height))
 
         # remake canvas
         self.image_id = self.canvas.create_image(canv_width, canv_height,
@@ -347,7 +399,6 @@ class Window(tk.Frame):
         move_x = -int((canv_width-new_img_width)/2.0)
         move_y = -int((canv_height-new_img_height)/2.0)
         self.canvas.move(self.image_id, move_x, move_y)
-        self.update()
 
     # open file
     def open_file(self):
@@ -359,8 +410,8 @@ class Window(tk.Frame):
         self.file_path = tk.filedialog.askopenfilename(filetypes=file_types)
         
         # open image
-        img = Image.open(self.file_path)
-        self.show_image(img)
+        self.img_base = Image.open(self.file_path)
+        self.show_image()
 
         # set status
         self.label_status.config(text="Old photo loaded from local file.")
@@ -376,8 +427,8 @@ class Window(tk.Frame):
         
         # load raw data and display
         raw_data = urllib.request.urlopen(self.str_url.get("1.0",tk.END)).read()
-        img = Image.open(io.BytesIO(raw_data))
-        self.show_image(img)
+        self.img_base = Image.open(io.BytesIO(raw_data))
+        self.show_image()
 
         # set status
         self.label_status.config(text="Old photo loaded from URL.")
@@ -416,10 +467,10 @@ class Window(tk.Frame):
                 self.result_path = colorizer.plot_transformed_image_from_url(
                     url=self.str_url.get("1.0",tk.END), path='//tmp/tmp.png',
                     render_factor = render_factor, compare = False)
-            img = Image.open(self.result_path)
+            self.img_base = Image.open(self.result_path)
 
             # display to canvas
-            self.show_image(img)
+            self.show_image()
             
         # do enhancement
         if (self.enhance_int.get() == 1):
@@ -457,8 +508,8 @@ class Window(tk.Frame):
             cv2.imwrite(self.result_path, result)
                 
             # display to canvas
-            img = Image.open(self.result_path)
-            self.show_image(img)
+            self.img_base = Image.open(self.result_path)
+            self.show_image()
         
         # set status to complete
         self.label_status.config(text="TimeSlide complete!")
@@ -482,7 +533,7 @@ class Window(tk.Frame):
 
 # configure primary window        
 root = tk.Tk()
-root.geometry("%ix738" % canv_width)
+root.geometry("%ix738" % init_canv_width)
 root.configure(bg=bg_color)
 
 # creation of an instance
