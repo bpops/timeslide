@@ -541,5 +541,10 @@ root.configure(bg=bg_color)
 # creation of an instance
 app = Window(root)
 
+# bring window to front
+root.lift()
+root.attributes('-topmost',True)
+root.after_idle(root.attributes,'-topmost',False)
+
 # mainloop 
-root.mainloop()  
+root.mainloop()
