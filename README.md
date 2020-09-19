@@ -57,8 +57,6 @@ source bundle.sh
 
 With this, pyinstaller will bundle the app, including all necessary python modules and dynamic libraries. It will be bundled into a single `.app` bundle (as well as a binary executable) under the `dist` folder. Additionally, the bash script will copy over the icon files into the `.app` file. I recommend running the binary executable first to troubleshoot, as you'll be able to see any errors that occur. 
 
-I also recommend you then compress the `.app` file into a zip file before sharing via file-sharing services, e.g., [iCloud](https://www.icloud.com) or [DropBox](https://www.dropbox.com).
-
 ## Running the Bundled macOS App
 
 Please note that distributing the application to others will require that they enable unidentified developer apps (one-time procedure) to run on any somewhat recent version of macOS. This can be done by providing those users with the following instructions.
@@ -78,7 +76,7 @@ Please note that distributing the application to others will require that they e
 ### v0.4 (2020.08.28)
 - default window width enlarged for better viewing
 - image now maintains aspect ratio correctly in canvas
-- resizing window now resizes canvas and image!
+- resizing window now resizes canvas and image
 - dropdown menus now have correct background color
 - removed many unncessary python modules from bundle
 - window now will start in center of the screen

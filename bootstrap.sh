@@ -23,8 +23,8 @@ wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x2.pb -O 
 wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x4.pb -O ./models/LapSRN_x4.pb
 wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x8.pb -O ./models/LapSRN_x8.pb
 
-# brew install libpng
-brew install libpng
+# brew install libpng, cmake
+brew install libpng cmake
 
 # python venv
 rm -fr venv
