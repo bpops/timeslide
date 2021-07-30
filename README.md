@@ -113,11 +113,4 @@ If you just want to test out TimeSlide but don't have black-and-white photos ava
 
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
 - [library of congress free-to-use](https://www.loc.gov/free-to-use/)
-- [pexels: black and white](https://www.pexels.com/search/black%20and%20white/)
-
-
-
-## more notes
-
-`brew install pygobject3 gtk+3`  # wasn't enough.. gi not found
-pip3 install pygobject           # this installed...
+- [pexels: black and white](https://www.pexels.com/search/black%20and%20white/)s
