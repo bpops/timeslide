@@ -149,7 +149,7 @@ class Window(tk.Frame):
         self.img_base = None
 
         # setup
-        self.master.title("TimeSlide v0.4")
+        self.master.title("TimeSlide v0.4.1")
         self.pack(fill=tk.BOTH, expand=True)
 
         # creating a menu instance
@@ -529,8 +529,10 @@ class Window(tk.Frame):
         print(str(self.result_path))
         save_file = tk.filedialog.asksaveasfile(filetypes = file_types,
             defaultextension=".jpg")
-        from_path = str(os.getcwd()) + "/" + str(self.result_path)
-        shutil.copyfile(from_path, save_file.name)
+        
+        #if not save_file == '': # account for cancelled modal
+        #    from_path = str(os.getcwd()) + "/" + str(self.result_path)
+        #    shutil.copyfile(from_path, save_file.name)
 
     # exit
     def client_exit(self):

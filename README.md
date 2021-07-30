@@ -73,6 +73,9 @@ Please note that distributing the application to others will require that they e
 
 ## Release Notes
 
+### v0.4.1 (2021.07.29)
+- updated several module versions for security and compatibility
+
 ### v0.4 (2020.08.28)
 - default window width enlarged for better viewing
 - image now maintains aspect ratio correctly in canvas
@@ -111,3 +114,10 @@ If you just want to test out TimeSlide but don't have black-and-white photos ava
 - [the way we were](https://www.reddit.com/r/TheWayWeWere/)
 - [library of congress free-to-use](https://www.loc.gov/free-to-use/)
 - [pexels: black and white](https://www.pexels.com/search/black%20and%20white/)
+
+
+
+## more notes
+
+`brew install pygobject3 gtk+3`  # wasn't enough.. gi not found
+pip3 install pygobject           # this installed...
