@@ -13,7 +13,7 @@ PyInstaller==4.0
 scipy==1.4.1
 scikit-image==0.17.2
 tensorboardX==2.1
-tensorflow==2.5.0
+tensorflow==2.5.3
 torch==1.6.0
 torchvision==0.7.0
 tqdm==4.48.2
