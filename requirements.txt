@@ -3,7 +3,7 @@ fastai==1.0.51
 ffmpeg==1.4
 Flask==1.1.2
 imageio==2.9.0
-ipython==7.17.0
+ipython==7.31.1
 matplotlib==3.4.2
 numpy
 opencv-contrib-python==4.4.0.40
