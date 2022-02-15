@@ -6,8 +6,8 @@ ln -s deoldify_repo/deoldify deoldify
 
 # de-oldify models
 mkdir models
-wget https://www.dropbox.com/s/zkehq1uwahhbc2o/ColorizeArtistic_gen.pth -O ./models/ColorizeArtistic_gen.pth
-wget https://www.dropbox.com/s/mwjep3vyqk5mkjc/ColorizeStable_gen.pth -O ./models/ColorizeStable_gen.pth
+wget https://data.deepai.org/deoldify/ColorizeArtistic_gen.pth -O ./models/ColorizeArtistic_gen.pth
+wget https://www.dropbox.com/s/usf7uifrctqw9rl/ColorizeStable_gen.pth -O ./models/ColorizeStable_gen.pth
 
 # opencv2 models
 wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x2.pb -O ./models/EDSR_x2.pb
