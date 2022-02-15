@@ -73,6 +73,10 @@ Please note that distributing the application to others will require that they e
 
 ## Release Notes
 
+### v0.4.2 (2022.02.14)
+- updated deoldify models to current urls
+- accepted dependabot PRs for various vulnerabilities
+
 ### v0.4.1 (2021.07.29)
 - updated several module versions for security and compatibility
 
