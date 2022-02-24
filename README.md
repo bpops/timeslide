@@ -2,6 +2,8 @@
 
 __a super-simple gui to slide old photographs into TODAY__
 
+__Note (2022.02.23): This program is not currently compatible with the latest updates to macOS. It may not be worth your while until I get it fixed to try and package it. Of course, if you're interested in getting it working please submit a PR.__
+
 TimeSlide is a prototype concept to balance the ease of applying machine-learning colorizing and up-sampling of old photographs without having to possess coding expertise or uploading your photographs to an online service. It is inspired by my desire to provide an easy-to-use *offline* option for my mother with her older family and ancestral photos. The goal is to give the people a secure and easy way to make your old photos look gorgeous. The application name is derived from the title of an episode of the amazing British sitcom, "[Red Dwarf](https://www.reddwarf.co.uk/news/index.cfm)," wherein [timeslides](https://en.wikipedia.org/wiki/Timeslides) provided much more interactive features of old photographs.
 
 ![TimeSlide Screenshot](./imgs/timeslide_screenshot.png)
