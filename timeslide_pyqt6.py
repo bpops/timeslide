@@ -9,6 +9,7 @@
 #           a super-simple gui to slide old photographs into TODAY
 #
 
+from cgitb import text
 import os, sys
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
@@ -72,8 +73,8 @@ class timeslide_app(QWidget):
         layout_step1.addWidget(btn_loadlocal)
         layout_step1.addWidget(lbl_step1_or)
         layout_step1.addWidget(text_step1_url, 1)
+        text_step1_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
         layout_step1.addWidget(btn_load_url)
-        text_step1_url.clearFocus() # why doesn't this work?
 
         # frame - step 2
         frame_step2 = QGroupBox(self)
