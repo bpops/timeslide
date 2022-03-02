@@ -45,7 +45,9 @@ class timeslide_app(QWidget):
 
         # image canvas
         self.img = QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg')
-        self.img = self.img.scaled(init_canv_width, init_canv_height)
+        self.img = self.img.scaled(init_canv_width, init_canv_height,
+            aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
+            transformMode=Qt.TransformationMode.FastTransformation)
         self.img_lbl = QLabel()
         self.img_lbl.setPixmap(self.img)
 
@@ -61,7 +63,7 @@ class timeslide_app(QWidget):
         frame_step1 = QGroupBox(self)
         frame_step1.setTitle("Step 1: Load Photo")
         layout_step1 = QHBoxLayout()
-        lbl_step1_or = QLabel("  or  ")
+        lbl_step1_or = QLabel("  or      ")
         frame_step1.setLayout(layout_step1)
         btn_loadlocal = QPushButton("Load Local Photo")
         #btn_loadlocal.resize(10,10)
@@ -70,9 +72,10 @@ class timeslide_app(QWidget):
         btn_load_url = QPushButton("Load URL")
         layout_step1.addWidget(btn_loadlocal)
         layout_step1.addWidget(lbl_step1_or)
-        layout_step1.addWidget(text_step1_url)
+        layout_step1.addWidget(text_step1_url, 1)
         layout_step1.addWidget(btn_load_url)
-        layout_step1.addStretch(1)
+        text_step1_url.clearFocus() # why doesn't this work?
+        #layout_step1.addStretch(1)
 
         # frame - step 2
         frame_step2 = QGroupBox(self)
@@ -137,7 +140,7 @@ class timeslide_app(QWidget):
 
         #self.setGeometry(50,50,320,200)
         self.center()
-        self.setWindowTitle('Timeslide v0.5')
+        self.setWindowTitle('TimeSlide v0.5')
         self.show()
 
     def center(self):
