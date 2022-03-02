@@ -89,11 +89,11 @@ class timeslide_app(QWidget):
         sldr_step2.setMaximum(max_rndr_fctr)
         frame_step2.setLayout(layout_step2)
         layout_step2.addWidget(cbox_step2)
-        layout_step2.addWidget(QLabel("    Model:"))
+        layout_step2.addWidget(QLabel("     Model:"))
         layout_step2.addWidget(ddown_step2)
         layout_step2.addWidget(QLabel("    Render Factor:"))
-        layout_step2.addWidget(sldr_step2)
-        layout_step2.addStretch(1)
+        layout_step2.addWidget(sldr_step2, 1)
+        #layout_step2.addStretch(1)
 
         # frame - step 3
         frame_step3 = QGroupBox(self)
@@ -106,12 +106,12 @@ class timeslide_app(QWidget):
         layout_step3.addWidget(cbox_step3)
         layout_step3.addWidget(QLabel("    Model:"))
         layout_step3.addWidget(ddown_step3)
-        layout_step3.addWidget(QLabel("    Multiplier:"))
+        layout_step3.addWidget(QLabel("          Multiplier:"))
         sldr_step3 = QSlider(Qt.Orientation.Horizontal)
         value_list_lo = [2, 3, 4]
         value_list_hi = [2, 4, 8]
-        layout_step3.addWidget(sldr_step3)
-        layout_step3.addStretch(1)
+        layout_step3.addWidget(sldr_step3, 1)
+        #layout_step3.addStretch(1)
 
         # frame - step 4
         frame_step4 = QGroupBox(self)
@@ -120,9 +120,9 @@ class timeslide_app(QWidget):
         btn_slidetime = QPushButton("Slide Time!")
         btn_savenewphoto = QPushButton("Save New Photo")
         frame_step4.setLayout(layout_step4)
-        layout_step4.addWidget(btn_slidetime)
+        layout_step4.addWidget(btn_slidetime, 1)
         layout_step4.addWidget(btn_savenewphoto)
-        layout_step4.addStretch(1)
+        #layout_step4.addStretch(1)
 
         # overall layout
         self.vbox = QVBoxLayout()
