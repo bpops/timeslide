@@ -12,7 +12,7 @@
 import os, sys
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
 from PyQt6.QtGui     import QPixmap
 from PyQt6.QtCore    import Qt
 
@@ -66,8 +66,7 @@ class timeslide_app(QWidget):
         lbl_step1_or = QLabel("  or      ")
         frame_step1.setLayout(layout_step1)
         btn_loadlocal = QPushButton("Load Local Photo")
-        #btn_loadlocal.resize(10,10)
-        #layout_step1.addWidget(lbl_step1)
+        btn_loadlocal.clicked.connect(self.load_local)
         text_step1_url = QLineEdit()
         btn_load_url = QPushButton("Load URL")
         layout_step1.addWidget(btn_loadlocal)
@@ -75,7 +74,6 @@ class timeslide_app(QWidget):
         layout_step1.addWidget(text_step1_url, 1)
         layout_step1.addWidget(btn_load_url)
         text_step1_url.clearFocus() # why doesn't this work?
-        #layout_step1.addStretch(1)
 
         # frame - step 2
         frame_step2 = QGroupBox(self)
@@ -136,6 +134,7 @@ class timeslide_app(QWidget):
         self.vbox.addWidget(frame_step3)
         self.vbox.addWidget(frame_step4)
         self.vbox.addStretch(1)
+        #self.vbox.setContentsMargins(15, 20, 15, 5) # l t r b
         self.setLayout(self.vbox)
 
         #self.setGeometry(50,50,320,200)
@@ -150,6 +149,16 @@ class timeslide_app(QWidget):
 
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+    def load_local(self):
+        filepath = QFileDialog.getOpenFileName(self, 'Load photo', wd)
+        
+        if filepath[0]:
+            f = open(filepath[0], 'r')
+
+            with f:
+                data = f.read()
+                self.textEdit.setText(data)
 
 def main():
 
