@@ -128,13 +128,13 @@ class timeslide_app(QWidget):
 
         # overall layout
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.img_lbl, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.vbox.addWidget(self.img_lbl, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         self.vbox.addWidget(frame_status)
         self.vbox.addWidget(frame_step1)
         self.vbox.addWidget(frame_step2)
         self.vbox.addWidget(frame_step3)
         self.vbox.addWidget(frame_step4)
-        self.vbox.addStretch(1)
+        #self.vbox.addStretch(1)
         #self.vbox.setContentsMargins(15, 20, 15, 5) # l t r b
         self.setLayout(self.vbox)
 
