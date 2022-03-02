@@ -55,7 +55,7 @@ class timeslide_app(QWidget):
         frame_status = QGroupBox(self)
         frame_status.setTitle("Status")
         layout_status = QVBoxLayout()
-        lbl_status = QLabel("Load an image to start.")
+        lbl_status = QLabel("Load a photo to start.")
         frame_status.setLayout(layout_status)
         layout_status.addWidget(lbl_status)
 
@@ -129,7 +129,7 @@ class timeslide_app(QWidget):
 
         # overall layout
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.img_lbl)
+        self.vbox.addWidget(self.img_lbl, alignment=Qt.AlignmentFlag.AlignCenter)
         self.vbox.addWidget(frame_status)
         self.vbox.addWidget(frame_step1)
         self.vbox.addWidget(frame_step2)
