@@ -14,8 +14,9 @@ import os, sys
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
+from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtGui     import QPixmap
-from PyQt6.QtCore    import Qt
+from PyQt6.QtCore    import Qt, pyqtSignal
 
 # required for pyinstaller: pytorch
 os.environ["PYTORCH_JIT"] = "0"
@@ -45,12 +46,16 @@ class timeslide_app(QWidget):
         self.resize(init_win_width, init_win_height)
 
         # image canvas
-        self.img = QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg')
-        self.img = self.img.scaled(init_canv_width, init_canv_height,
+        self.pix_map = QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg')
+        self.img = self.pix_map.scaled(init_canv_width, init_canv_height,
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
-            transformMode=Qt.TransformationMode.FastTransformation)
+            transformMode=Qt.TransformationMode.SmoothTransformation)
         self.img_lbl = QLabel()
+        self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
         self.img_lbl.setPixmap(self.img)
+        self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+
 
         # frame - status
         frame_status = QGroupBox(self)
@@ -64,7 +69,7 @@ class timeslide_app(QWidget):
         frame_step1 = QGroupBox(self)
         frame_step1.setTitle("Step 1: Load Photo")
         layout_step1 = QHBoxLayout()
-        lbl_step1_or = QLabel("  or      ")
+        lbl_step1_or = QLabel("   or      ")
         frame_step1.setLayout(layout_step1)
         btn_loadlocal = QPushButton("Load Local Photo")
         btn_loadlocal.clicked.connect(self.load_local)
@@ -128,12 +133,12 @@ class timeslide_app(QWidget):
 
         # overall layout
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.img_lbl, 1, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.vbox.addWidget(frame_status)
-        self.vbox.addWidget(frame_step1)
-        self.vbox.addWidget(frame_step2)
-        self.vbox.addWidget(frame_step3)
-        self.vbox.addWidget(frame_step4)
+        self.vbox.addWidget(self.img_lbl)#alignment=Qt.AlignmentFlag.AlignCenter)
+        self.vbox.addWidget(frame_status, stretch=0)
+        self.vbox.addWidget(frame_step1, stretch=0)
+        self.vbox.addWidget(frame_step2, stretch=0)
+        self.vbox.addWidget(frame_step3, stretch=0)
+        self.vbox.addWidget(frame_step4, stretch=0)
         #self.vbox.addStretch(1)
         #self.vbox.setContentsMargins(15, 20, 15, 5) # l t r b
         self.setLayout(self.vbox)
@@ -141,7 +146,20 @@ class timeslide_app(QWidget):
         #self.setGeometry(50,50,320,200)
         self.center()
         self.setWindowTitle('TimeSlide v0.5')
-        self.show()
+        self.show();
+
+    #resize_signal = pyqtSignal
+    def resizeEvent(self, event):
+        # resize image
+        #self.img_lbl.adjustSize()
+        print(self.img_lbl.size().height())
+        print(self.height())
+        self.img = self.pix_map.scaled(self.img_lbl.size().width(), self.img_lbl.size().height(),
+            aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
+            transformMode=Qt.TransformationMode.FastTransformation)
+        self.img_lbl.setPixmap(self.img)
+        return super().resizeEvent(event)
+
 
     def center(self):
 
