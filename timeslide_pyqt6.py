@@ -21,6 +21,28 @@ from PyQt6.QtCore    import Qt, pyqtSignal
 # required for pyinstaller: pytorch
 os.environ["PYTORCH_JIT"] = "0"
 
+# set up delodify
+from deoldify import device
+from deoldify.device_id import DeviceId
+device.set(device = DeviceId.GPU0)
+#from deoldify.visualize import *
+#torch.backends.cudnn.benchmark = True
+
+# set up image enhance
+import cv2
+from cv2 import dnn_superres
+
+# import other modules
+import threading
+import tensorflow as tf
+import shutil
+import os
+import urllib.request
+import io
+import numpy as np
+import time
+
+# set working directory
 # used for development vs bundled paths
 try:
    wd = sys._MEIPASS
@@ -55,7 +77,6 @@ class timeslide_app(QWidget):
         self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
 
         # frame - status
         frame_status = QGroupBox(self)
@@ -118,7 +139,6 @@ class timeslide_app(QWidget):
         value_list_lo = [2, 3, 4]
         value_list_hi = [2, 4, 8]
         layout_step3.addWidget(sldr_step3, 1)
-        #layout_step3.addStretch(1)
 
         # frame - step 4
         frame_step4 = QGroupBox(self)
@@ -129,7 +149,6 @@ class timeslide_app(QWidget):
         frame_step4.setLayout(layout_step4)
         layout_step4.addWidget(btn_slidetime, 1)
         layout_step4.addWidget(btn_savenewphoto)
-        #layout_step4.addStretch(1)
 
         # overall layout
         self.vbox = QVBoxLayout()
@@ -139,27 +158,19 @@ class timeslide_app(QWidget):
         self.vbox.addWidget(frame_step2, stretch=0)
         self.vbox.addWidget(frame_step3, stretch=0)
         self.vbox.addWidget(frame_step4, stretch=0)
-        #self.vbox.addStretch(1)
-        #self.vbox.setContentsMargins(15, 20, 15, 5) # l t r b
         self.setLayout(self.vbox)
 
-        #self.setGeometry(50,50,320,200)
         self.center()
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
 
     #resize_signal = pyqtSignal
     def resizeEvent(self, event):
-        # resize image
-        #self.img_lbl.adjustSize()
-        print(self.img_lbl.size().height())
-        print(self.height())
         self.img = self.pix_map.scaled(self.img_lbl.size().width(), self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
             transformMode=Qt.TransformationMode.FastTransformation)
         self.img_lbl.setPixmap(self.img)
         return super().resizeEvent(event)
-
 
     def center(self):
 
