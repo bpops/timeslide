@@ -60,7 +60,6 @@ class timeslide_app(QWidget):
 
     def __init__(self):
         super().__init__()
-
         self.initUI()
 
     def initUI(self):
@@ -93,7 +92,7 @@ class timeslide_app(QWidget):
         lbl_step1_or = QLabel("   or      ")
         frame_step1.setLayout(layout_step1)
         btn_loadlocal = QPushButton("Load Local Photo")
-        btn_loadlocal.clicked.connect(self.load_local)
+        btn_loadlocal.clicked.connect(self.loadLocal)
         text_step1_url = QLineEdit()
         btn_load_url = QPushButton("Load URL")
         layout_step1.addWidget(btn_loadlocal)
@@ -162,9 +161,8 @@ class timeslide_app(QWidget):
 
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
-        self.center()
+        self.centerWindow()
 
-    #resize_signal = pyqtSignal
     def resizeEvent(self, event):
         self.img = self.pix_map.scaled(self.img_lbl.size().width(), self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
@@ -172,30 +170,24 @@ class timeslide_app(QWidget):
         self.img_lbl.setPixmap(self.img)
         return super().resizeEvent(event)
 
-    def center(self):
-
+    def centerWindow(self):
         qr = self.frameGeometry()
         cp = self.screen().availableGeometry().center()
-
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-    def load_local(self):
+    def loadLocal(self):
         filepath = QFileDialog.getOpenFileName(self, 'Load photo', wd)
-        
         if filepath[0]:
             f = open(filepath[0], 'r')
-
             with f:
                 data = f.read()
                 self.textEdit.setText(data)
 
 def main():
-
     app = QApplication(sys.argv)
     ex = timeslide_app()
     sys.exit(app.exec())
-
 
 if __name__ == '__main__':
     main()
