@@ -56,7 +56,7 @@ init_canv_height = 440
 init_win_width   = 600
 init_win_height  = 738
 
-class timeslide_app(QWidget):
+class timeslideApp(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -186,7 +186,7 @@ class timeslide_app(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    ex = timeslide_app()
+    ex = timeslideApp()
     sys.exit(app.exec())
 
 if __name__ == '__main__':
