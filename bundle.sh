@@ -1,4 +1,3 @@
-
 # timeslide macOS bundler
 
 # build using pyinstaller
