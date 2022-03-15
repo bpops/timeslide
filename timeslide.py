@@ -22,9 +22,9 @@ from PyQt6.QtCore    import Qt, pyqtSignal
 os.environ["PYTORCH_JIT"] = "0"
 
 # set up delodify
-from deoldify import device
-from deoldify.device_id import DeviceId
-device.set(device = DeviceId.GPU0)
+#from deoldify import device
+#from deoldify.device_id import DeviceId
+#device.set(device = DeviceId.GPU0)
 #from deoldify.visualize import *
 #torch.backends.cudnn.benchmark = True
 
@@ -33,14 +33,14 @@ import cv2
 from cv2 import dnn_superres
 
 # import other modules
-import threading
-import tensorflow as tf
+#import threading
+#import tensorflow as tf
 import shutil
 import os
-import urllib.request
-import io
-import numpy as np
-import time
+#import urllib.request
+#import io
+#import numpy as np
+#import time
 
 # set working directory
 # used for development vs bundled paths
@@ -160,9 +160,9 @@ class timeslide_app(QWidget):
         self.vbox.addWidget(frame_step4, stretch=0)
         self.setLayout(self.vbox)
 
-        self.center()
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
+        self.center()
 
     #resize_signal = pyqtSignal
     def resizeEvent(self, event):
