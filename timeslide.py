@@ -120,7 +120,9 @@ class timeslideApp(QWidget):
         layout_step2.addWidget(ddown_step2)
         layout_step2.addWidget(QLabel("    Render Factor:"))
         layout_step2.addWidget(sldr_step2, 1)
-        #layout_step2.addStretch(1)
+        self.renderLabel = QLabel("7")
+        layout_step2.addWidget(self.renderLabel)
+        sldr_step2.valueChanged.connect(self.updateRenderLabel)
 
         # frame - step 3
         frame_step3 = QGroupBox(self)
@@ -138,6 +140,9 @@ class timeslideApp(QWidget):
         value_list_lo = [2, 3, 4]
         value_list_hi = [2, 4, 8]
         layout_step3.addWidget(sldr_step3, 1)
+        self.multLabel = QLabel(str(value_list_lo[0]))
+        layout_step3.addWidget(self.multLabel)
+        sldr_step3.valueChanged.connect(self.updateMultLabel)
 
         # frame - step 4
         frame_step4 = QGroupBox(self)
@@ -162,6 +167,11 @@ class timeslideApp(QWidget):
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
         self.centerWindow()
+
+    def updateRenderLabel(self, value):
+        self.renderLabel.setText(str(value))
+    def updateMultLabel(self, value):
+        self.multLabel.setText(str(value))
 
     def resizeEvent(self, event):
         self.img = self.pix_map.scaled(self.img_lbl.size().width(), self.img_lbl.size().height(),
