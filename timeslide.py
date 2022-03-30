@@ -9,7 +9,8 @@
 #           a super-simple gui to slide old photographs into TODAY
 #
 
-import os, sys
+
+# pyqt6 requirements
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
@@ -18,25 +19,26 @@ from PyQt6.QtGui     import QPixmap
 from PyQt6.QtCore    import Qt, pyqtSignal
 
 # required for pyinstaller: pytorch
+import os
 os.environ["PYTORCH_JIT"] = "0"
 
 # set up delodify
-from deoldify import device
-from deoldify.device_id import DeviceId
-device.set(device = DeviceId.GPU0)
-from deoldify.visualize import *
-torch.backends.cudnn.benchmark = True
+#from deoldify import device
+#from deoldify.device_id import DeviceId
+#device.set(device = DeviceId.GPU0)
+#from deoldify.visualize import *
+#torch.backends.cudnn.benchmark = True
 
 # set up image enhance
-import cv2
-from cv2 import dnn_superres
+#import cv2
+#from cv2 import dnn_superres
 
-# import other modules
+# other
+import sys
 #import threading
 #import tensorflow as tf
 #from cgitb import text
-import shutil
-import os
+#import shutil
 from PIL import Image
 import urllib.request
 import validators
@@ -75,7 +77,7 @@ class timeslideApp(QWidget):
         self.img_lbl = QLabel()
         self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
-        img_pth = f'{wd}/dustbowl.jpg'
+        img_pth = f'{wd}/imgs/dustbowl.jpg'
         self.showImage(img_pth)
 
         # frame - status
@@ -128,24 +130,24 @@ class timeslideApp(QWidget):
         sldr_stepcolor.valueChanged.connect(self.updateRenderLabel)
 
         # enhance
-        frame_stepenhance = QGroupBox(self)
-        frame_stepenhance.setTitle("Enhance (Upscale)")
-        layout_stepenhance = QHBoxLayout()
-        cbox_stepenhance = QCheckBox("Enhance")
-        ddown_stepenhance = QComboBox()
-        ddown_stepenhance.addItems(["EDSR", "ESPCN", "FSRCNN", "LapSRN"])
-        frame_stepenhance.setLayout(layout_stepenhance)
-        layout_stepenhance.addWidget(cbox_stepenhance)
-        layout_stepenhance.addWidget(QLabel("    Model:"))
-        layout_stepenhance.addWidget(ddown_stepenhance)
-        layout_stepenhance.addWidget(QLabel("          Multiplier:"))
-        sldr_stepenhance = QSlider(Qt.Orientation.Horizontal)
-        value_list_lo = [2, 3, 4]
-        value_list_hi = [2, 4, 8]
-        layout_stepenhance.addWidget(sldr_stepenhance, 1)
-        self.multLabel = QLabel(str(value_list_lo[0]))
-        layout_stepenhance.addWidget(self.multLabel)
-        sldr_stepenhance.valueChanged.connect(self.updateMultLabel)
+        #frame_stepenhance = QGroupBox(self)
+        #frame_stepenhance.setTitle("Enhance (Upscale)")
+        #layout_stepenhance = QHBoxLayout()
+        #cbox_stepenhance = QCheckBox("Enhance")
+        #ddown_stepenhance = QComboBox()
+        #ddown_stepenhance.addItems(["EDSR", "ESPCN", "FSRCNN", "LapSRN"])
+        #frame_stepenhance.setLayout(layout_stepenhance)
+        #layout_stepenhance.addWidget(cbox_stepenhance)
+        #layout_stepenhance.addWidget(QLabel("    Model:"))
+        #layout_stepenhance.addWidget(ddown_stepenhance)
+        #layout_stepenhance.addWidget(QLabel("          Multiplier:"))
+        #sldr_stepenhance = QSlider(Qt.Orientation.Horizontal)
+        #value_list_lo = [2, 3, 4]
+        #value_list_hi = [2, 4, 8]
+        #layout_stepenhance.addWidget(sldr_stepenhance, 1)
+        #self.multLabel = QLabel(str(value_list_lo[0]))
+        #layout_stepenhance.addWidget(self.multLabel)
+        #sldr_stepenhance.valueChanged.connect(self.updateMultLabel)
 
         # finalize
         frame_stepslide = QGroupBox(self)
@@ -163,7 +165,7 @@ class timeslideApp(QWidget):
         self.vbox.addWidget(frame_status, stretch=0)
         self.vbox.addWidget(frame_loadstep, stretch=0)
         self.vbox.addWidget(frame_stepcolor, stretch=0)
-        self.vbox.addWidget(frame_stepenhance, stretch=0)
+        #self.vbox.addWidget(frame_stepenhance, stretch=0)
         self.vbox.addWidget(frame_stepslide, stretch=0)
         self.setLayout(self.vbox)
 

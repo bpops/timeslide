@@ -5,7 +5,9 @@ block_cipher = None
 a = Analysis(['timeslide.py'],
              pathex=['.'],
              binaries=[],
-             datas=[('models/*','models')],
+             datas=[('models/*','models'),
+                    ('imgs/dustbowl.jpg','imgs')
+                   ],
              hiddenimports=[],
              hookspath=['hooks'],
              runtime_hooks=[],
