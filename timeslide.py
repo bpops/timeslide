@@ -23,11 +23,12 @@ import os
 os.environ["PYTORCH_JIT"] = "0"
 
 # set up delodify
-#from deoldify import device
-#from deoldify.device_id import DeviceId
-#device.set(device = DeviceId.GPU0)
-#from deoldify.visualize import *
-#torch.backends.cudnn.benchmark = True
+from deoldify import device
+from deoldify.device_id import DeviceId
+device.set(device = DeviceId.GPU0)
+from deoldify.visualize import *
+torch.backends.cudnn.benchmark = True
+import torchvision
 
 # set up image enhance
 #import cv2
@@ -49,13 +50,19 @@ from io import BytesIO
 #import time
 
 # set working directory
-# used for development vs bundled paths
+# (used for development vs bundled paths)
 try:
    wd = sys._MEIPASS
 except AttributeError:
    wd = os.path.dirname(os.path.realpath(__file__))
    #wd = os.getcwd()
 os.chdir(wd)
+model_dir = f"{wd}/models"
+
+# load pretrained torch models
+os.environ["TORCH_HOME"] = model_dir
+resnet = torchvision.models.resnet34(pretrained=True)
+resnet = torchvision.models.resnet101(pretrained=True)
 
 # canvas
 init_canv_width  = 640
@@ -110,24 +117,24 @@ class timeslideApp(QWidget):
         frame_stepcolor = QGroupBox(self)
         frame_stepcolor.setTitle("Colorize")
         layout_stepcolor = QHBoxLayout()
-        cbox_stepcolor = QCheckBox("Colorize")
-        cbox_stepcolor.setChecked(1)
-        ddown_stepcolor = QComboBox()
-        ddown_stepcolor.addItems(["Stable", "Artistic"])
-        sldr_stepcolor = QSlider(Qt.Orientation.Horizontal)
+        self.cbox_stepcolor = QCheckBox("Colorize")
+        self.cbox_stepcolor.setChecked(1)
+        self.ddown_stepcolor = QComboBox()
+        self.ddown_stepcolor.addItems(["Stable", "Artistic"])
+        self.sldr_stepcolor = QSlider(Qt.Orientation.Horizontal)
         min_rndr_fctr = 7
         max_rndr_fctr = 45
-        sldr_stepcolor.setMinimum(min_rndr_fctr)
-        sldr_stepcolor.setMaximum(max_rndr_fctr)
+        self.sldr_stepcolor.setMinimum(min_rndr_fctr)
+        self.sldr_stepcolor.setMaximum(max_rndr_fctr)
         frame_stepcolor.setLayout(layout_stepcolor)
-        layout_stepcolor.addWidget(cbox_stepcolor)
+        layout_stepcolor.addWidget(self.cbox_stepcolor)
         layout_stepcolor.addWidget(QLabel("     Model:"))
-        layout_stepcolor.addWidget(ddown_stepcolor)
+        layout_stepcolor.addWidget(self.ddown_stepcolor)
         layout_stepcolor.addWidget(QLabel("    Render Factor:"))
-        layout_stepcolor.addWidget(sldr_stepcolor, 1)
+        layout_stepcolor.addWidget(self.sldr_stepcolor, 1)
         self.renderLabel = QLabel("7")
         layout_stepcolor.addWidget(self.renderLabel)
-        sldr_stepcolor.valueChanged.connect(self.updateRenderLabel)
+        self.sldr_stepcolor.valueChanged.connect(self.updateRenderLabel)
 
         # enhance
         #frame_stepenhance = QGroupBox(self)
@@ -154,6 +161,7 @@ class timeslideApp(QWidget):
         frame_stepslide.setTitle("Finalize")
         layout_stepslide = QHBoxLayout()
         btn_slidetime = QPushButton("Slide Time!")
+        btn_slidetime.clicked.connect(self.slideTime)
         btn_savenewphoto = QPushButton("Save New Photo")
         frame_stepslide.setLayout(layout_stepslide)
         layout_stepslide.addWidget(btn_slidetime, 1)
@@ -162,8 +170,8 @@ class timeslideApp(QWidget):
         # overall layout
         self.vbox = QVBoxLayout()
         self.vbox.addWidget(self.img_lbl)#alignment=Qt.AlignmentFlag.AlignCenter)
-        self.vbox.addWidget(frame_status, stretch=0)
-        self.vbox.addWidget(frame_loadstep, stretch=0)
+        self.vbox.addWidget(frame_status,    stretch=0)
+        self.vbox.addWidget(frame_loadstep,  stretch=0)
         self.vbox.addWidget(frame_stepcolor, stretch=0)
         #self.vbox.addWidget(frame_stepenhance, stretch=0)
         self.vbox.addWidget(frame_stepslide, stretch=0)
@@ -248,6 +256,24 @@ class timeslideApp(QWidget):
         else:
             self.img_base = Image.open(img_pth)
         self.update()
+
+    def slideTime(self):
+
+        # colorize
+        if self.cbox_stepcolor.isChecked():
+
+            # get settings
+            model_i   = self.ddown_stepcolor.currentIndex()
+            model     = self.ddown_stepcolor.currentText()
+            artistic  = False if model_i == 0 else True
+            rndr_fctr = self.sldr_stepcolor.value()
+
+            # set status
+            self.setStatus(f"Colorizing ({model} {rndr_fctr}). Please wait...")
+
+            # set colorizer
+            colorizer = get_image_colorizer(artistic=artistic)
+
 
 def main():
     app = QApplication(sys.argv)
