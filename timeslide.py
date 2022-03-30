@@ -9,7 +9,6 @@
 #           a super-simple gui to slide old photographs into TODAY
 #
 
-from cgitb import text
 import os, sys
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
@@ -22,11 +21,11 @@ from PyQt6.QtCore    import Qt, pyqtSignal
 os.environ["PYTORCH_JIT"] = "0"
 
 # set up delodify
-#from deoldify import device
-#from deoldify.device_id import DeviceId
-#device.set(device = DeviceId.GPU0)
-#from deoldify.visualize import *
-#torch.backends.cudnn.benchmark = True
+from deoldify import device
+from deoldify.device_id import DeviceId
+device.set(device = DeviceId.GPU0)
+from deoldify.visualize import *
+torch.backends.cudnn.benchmark = True
 
 # set up image enhance
 import cv2
@@ -35,6 +34,7 @@ from cv2 import dnn_superres
 # import other modules
 #import threading
 #import tensorflow as tf
+#from cgitb import text
 import shutil
 import os
 from PIL import Image
@@ -87,84 +87,84 @@ class timeslideApp(QWidget):
         layout_status.addWidget(self.lbl_status)
         self.setStatus("Load a photo to start.")
 
-        # frame - step 1
-        frame_step1 = QGroupBox(self)
-        frame_step1.setTitle("Step 1: Load Photo")
-        layout_step1 = QHBoxLayout()
-        lbl_step1_or = QLabel("   or      ")
-        frame_step1.setLayout(layout_step1)
+        # load photo
+        frame_loadstep = QGroupBox(self)
+        frame_loadstep.setTitle("Load Photo")
+        layout_loadstep = QHBoxLayout()
+        lbl_loadstep_or = QLabel("   or      ")
+        frame_loadstep.setLayout(layout_loadstep)
         btn_loadlocal = QPushButton("Load Local Photo")
         btn_loadlocal.clicked.connect(self.loadLocal)
-        self.text_step1_url = QLineEdit()
+        self.text_loadstep_url = QLineEdit()
         btn_load_url = QPushButton("Load URL")
         btn_load_url.clicked.connect(self.loadURL)
-        layout_step1.addWidget(btn_loadlocal)
-        layout_step1.addWidget(lbl_step1_or)
-        layout_step1.addWidget(self.text_step1_url, 1)
-        self.text_step1_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
-        layout_step1.addWidget(btn_load_url)
+        layout_loadstep.addWidget(btn_loadlocal)
+        layout_loadstep.addWidget(lbl_loadstep_or)
+        layout_loadstep.addWidget(self.text_loadstep_url, 1)
+        self.text_loadstep_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
+        layout_loadstep.addWidget(btn_load_url)
 
-        # frame - step 2
-        frame_step2 = QGroupBox(self)
-        frame_step2.setTitle("Step 2: Colorize")
-        layout_step2 = QHBoxLayout()
-        cbox_step2 = QCheckBox("Colorize")
-        cbox_step2.setChecked(1)
-        ddown_step2 = QComboBox()
-        ddown_step2.addItems(["Stable", "Artistic"])
-        sldr_step2 = QSlider(Qt.Orientation.Horizontal)
+        # colorize
+        frame_stepcolor = QGroupBox(self)
+        frame_stepcolor.setTitle("Colorize")
+        layout_stepcolor = QHBoxLayout()
+        cbox_stepcolor = QCheckBox("Colorize")
+        cbox_stepcolor.setChecked(1)
+        ddown_stepcolor = QComboBox()
+        ddown_stepcolor.addItems(["Stable", "Artistic"])
+        sldr_stepcolor = QSlider(Qt.Orientation.Horizontal)
         min_rndr_fctr = 7
         max_rndr_fctr = 45
-        sldr_step2.setMinimum(min_rndr_fctr)
-        sldr_step2.setMaximum(max_rndr_fctr)
-        frame_step2.setLayout(layout_step2)
-        layout_step2.addWidget(cbox_step2)
-        layout_step2.addWidget(QLabel("     Model:"))
-        layout_step2.addWidget(ddown_step2)
-        layout_step2.addWidget(QLabel("    Render Factor:"))
-        layout_step2.addWidget(sldr_step2, 1)
+        sldr_stepcolor.setMinimum(min_rndr_fctr)
+        sldr_stepcolor.setMaximum(max_rndr_fctr)
+        frame_stepcolor.setLayout(layout_stepcolor)
+        layout_stepcolor.addWidget(cbox_stepcolor)
+        layout_stepcolor.addWidget(QLabel("     Model:"))
+        layout_stepcolor.addWidget(ddown_stepcolor)
+        layout_stepcolor.addWidget(QLabel("    Render Factor:"))
+        layout_stepcolor.addWidget(sldr_stepcolor, 1)
         self.renderLabel = QLabel("7")
-        layout_step2.addWidget(self.renderLabel)
-        sldr_step2.valueChanged.connect(self.updateRenderLabel)
+        layout_stepcolor.addWidget(self.renderLabel)
+        sldr_stepcolor.valueChanged.connect(self.updateRenderLabel)
 
-        # frame - step 3
-        frame_step3 = QGroupBox(self)
-        frame_step3.setTitle("Step 3: Enhance")
-        layout_step3 = QHBoxLayout()
-        cbox_step3 = QCheckBox("Enhance")
-        ddown_step3 = QComboBox()
-        ddown_step3.addItems(["EDSR", "ESPCN", "FSRCNN", "LapSRN"])
-        frame_step3.setLayout(layout_step3)
-        layout_step3.addWidget(cbox_step3)
-        layout_step3.addWidget(QLabel("    Model:"))
-        layout_step3.addWidget(ddown_step3)
-        layout_step3.addWidget(QLabel("          Multiplier:"))
-        sldr_step3 = QSlider(Qt.Orientation.Horizontal)
+        # enhance
+        frame_stepenhance = QGroupBox(self)
+        frame_stepenhance.setTitle("Enhance (Upscale)")
+        layout_stepenhance = QHBoxLayout()
+        cbox_stepenhance = QCheckBox("Enhance")
+        ddown_stepenhance = QComboBox()
+        ddown_stepenhance.addItems(["EDSR", "ESPCN", "FSRCNN", "LapSRN"])
+        frame_stepenhance.setLayout(layout_stepenhance)
+        layout_stepenhance.addWidget(cbox_stepenhance)
+        layout_stepenhance.addWidget(QLabel("    Model:"))
+        layout_stepenhance.addWidget(ddown_stepenhance)
+        layout_stepenhance.addWidget(QLabel("          Multiplier:"))
+        sldr_stepenhance = QSlider(Qt.Orientation.Horizontal)
         value_list_lo = [2, 3, 4]
         value_list_hi = [2, 4, 8]
-        layout_step3.addWidget(sldr_step3, 1)
+        layout_stepenhance.addWidget(sldr_stepenhance, 1)
         self.multLabel = QLabel(str(value_list_lo[0]))
-        layout_step3.addWidget(self.multLabel)
-        sldr_step3.valueChanged.connect(self.updateMultLabel)
+        layout_stepenhance.addWidget(self.multLabel)
+        sldr_stepenhance.valueChanged.connect(self.updateMultLabel)
 
-        # frame - step 4
-        frame_step4 = QGroupBox(self)
-        frame_step4.setTitle("Step 4: Finish Up")
-        layout_step4 = QHBoxLayout()
+        # finalize
+        frame_stepslide = QGroupBox(self)
+        frame_stepslide.setTitle("Finalize")
+        layout_stepslide = QHBoxLayout()
         btn_slidetime = QPushButton("Slide Time!")
         btn_savenewphoto = QPushButton("Save New Photo")
-        frame_step4.setLayout(layout_step4)
-        layout_step4.addWidget(btn_slidetime, 1)
-        layout_step4.addWidget(btn_savenewphoto)
+        frame_stepslide.setLayout(layout_stepslide)
+        layout_stepslide.addWidget(btn_slidetime, 1)
+        layout_stepslide.addWidget(btn_savenewphoto)
 
         # overall layout
         self.vbox = QVBoxLayout()
         self.vbox.addWidget(self.img_lbl)#alignment=Qt.AlignmentFlag.AlignCenter)
         self.vbox.addWidget(frame_status, stretch=0)
-        self.vbox.addWidget(frame_step1, stretch=0)
-        self.vbox.addWidget(frame_step2, stretch=0)
-        self.vbox.addWidget(frame_step3, stretch=0)
-        self.vbox.addWidget(frame_step4, stretch=0)
+        self.vbox.addWidget(frame_loadstep, stretch=0)
+        self.vbox.addWidget(frame_stepcolor, stretch=0)
+        self.vbox.addWidget(frame_stepenhance, stretch=0)
+        self.vbox.addWidget(frame_stepslide, stretch=0)
         self.setLayout(self.vbox)
 
         self.setWindowTitle('TimeSlide v0.5')
@@ -202,7 +202,7 @@ class timeslideApp(QWidget):
         """
         Load URL
         """
-        url = self.text_step1_url.text()
+        url = self.text_loadstep_url.text()
         if not validators.url(url):
             self.setStatus("Invalid URL")
         else:
@@ -218,20 +218,26 @@ class timeslideApp(QWidget):
         """
         Show the given image
         """
+
+        # load the pixel map
         if not validators.url(img_pth): # local path
             self.pix_map = QPixmap(img_pth)
             is_url = False
-        else: # url
+        else:                           # url
             img_data = urllib.request.urlopen(img_pth).read()
             self.pix_map = QPixmap()
             self.pix_map.loadFromData(img_data)
             is_url = True
+        
+        # set canvas properties
         self.img = self.pix_map.scaled(self.img_lbl.size().width(),
             self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
             transformMode   = Qt.TransformationMode.SmoothTransformation)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        
+        # open the image
         if is_url:
             self.setStatus("Downloading. Please wait...")
             response = requests.get(img_pth)
