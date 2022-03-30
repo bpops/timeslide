@@ -192,12 +192,7 @@ class timeslideApp(QWidget):
         filepath = QFileDialog.getOpenFileName(self, 'Load photo', wd)
         if filepath[0]:
             self.setStatus(f"Opened {filepath[0]}")
-            self.showImage(QPixmap(filepath[0]))
-            self.img_base = Image.open(filepath[0])
-            #f = open(filepath[0], 'r')
-            #with f:
-            #    data = f.read()
-            #    self.textEdit.setText(data)
+            self.showImage(filepath[0])
 
     def setStatus(self, text):
         """
