@@ -74,9 +74,10 @@ class timeslideApp(QWidget):
         frame_status = QGroupBox(self)
         frame_status.setTitle("Status")
         layout_status = QVBoxLayout()
-        lbl_status = QLabel("Load a photo to start.")
+        self.lbl_status = QLabel("")
         frame_status.setLayout(layout_status)
-        layout_status.addWidget(lbl_status)
+        layout_status.addWidget(self.lbl_status)
+        self.setStatus("Load a photo to start.")
 
         # frame - step 1
         frame_step1 = QGroupBox(self)
@@ -180,12 +181,25 @@ class timeslideApp(QWidget):
         self.move(qr.topLeft())
 
     def loadLocal(self):
+        """
+        Load local file
+        """
         filepath = QFileDialog.getOpenFileName(self, 'Load photo', wd)
+        print(filepath[0])
         if filepath[0]:
-            f = open(filepath[0], 'r')
-            with f:
-                data = f.read()
-                self.textEdit.setText(data)
+            self.showImage(QPixmap(filepath[0]))
+        else:
+            self.setStatus("Error: File unrecognizable")
+            #f = open(filepath[0], 'r')
+            #with f:
+            #    data = f.read()
+            #    self.textEdit.setText(data)
+
+    def setStatus(self, text):
+        """
+        Set Status Text
+        """
+        self.lbl_status.setText(text)
 
     def showImage(self, pix_map):
         """
