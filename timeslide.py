@@ -207,11 +207,13 @@ class timeslideApp(QWidget):
         Show the given QPixMap
         """
         self.pix_map = pix_map
-        self.img = self.pix_map.scaled(init_canv_width, init_canv_height,
+        self.img = self.pix_map.scaled(self.img_lbl.size().width(),
+            self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
             transformMode=Qt.TransformationMode.SmoothTransformation)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.update()
 
 def main():
     app = QApplication(sys.argv)
