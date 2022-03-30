@@ -38,8 +38,11 @@ from cv2 import dnn_superres
 import shutil
 import os
 from PIL import Image
+import urllib.request
+import validators
+import requests
 #import urllib.request
-#import io
+from io import BytesIO
 #import numpy as np
 #import time
 
@@ -92,12 +95,13 @@ class timeslideApp(QWidget):
         frame_step1.setLayout(layout_step1)
         btn_loadlocal = QPushButton("Load Local Photo")
         btn_loadlocal.clicked.connect(self.loadLocal)
-        text_step1_url = QLineEdit()
+        self.text_step1_url = QLineEdit()
         btn_load_url = QPushButton("Load URL")
+        btn_load_url.clicked.connect(self.loadURL)
         layout_step1.addWidget(btn_loadlocal)
         layout_step1.addWidget(lbl_step1_or)
-        layout_step1.addWidget(text_step1_url, 1)
-        text_step1_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
+        layout_step1.addWidget(self.text_step1_url, 1)
+        self.text_step1_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
         layout_step1.addWidget(btn_load_url)
 
         # frame - step 2
@@ -194,6 +198,16 @@ class timeslideApp(QWidget):
             self.setStatus(f"Opened {filepath[0]}")
             self.showImage(filepath[0])
 
+    def loadURL(self):
+        """
+        Load URL
+        """
+        url = self.text_step1_url.text()
+        if not validators.url(url):
+            self.setStatus("Invalid URL")
+        else:
+            self.showImage(url)
+
     def setStatus(self, text):
         """
         Set Status Text
@@ -204,14 +218,27 @@ class timeslideApp(QWidget):
         """
         Show the given image
         """
-        self.pix_map = QPixmap(img_pth)
+        if not validators.url(img_pth): # local path
+            self.pix_map = QPixmap(img_pth)
+            is_url = False
+        else: # url
+            img_data = urllib.request.urlopen(img_pth).read()
+            self.pix_map = QPixmap()
+            self.pix_map.loadFromData(img_data)
+            is_url = True
         self.img = self.pix_map.scaled(self.img_lbl.size().width(),
             self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
-            transformMode=Qt.TransformationMode.SmoothTransformation)
+            transformMode   = Qt.TransformationMode.SmoothTransformation)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        self.img_base = Image.open(img_pth)
+        if is_url:
+            self.setStatus("Downloading. Please wait...")
+            response = requests.get(img_pth)
+            self.img_base = Image.open(BytesIO(response.content))
+            self.setStatus(f"Downloaded {img_pth}")
+        else:
+            self.img_base = Image.open(img_pth)
         self.update()
 
 def main():
