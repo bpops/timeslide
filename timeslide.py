@@ -47,7 +47,8 @@ import os
 try:
    wd = sys._MEIPASS
 except AttributeError:
-   wd = os.getcwd()
+   wd = os.path.dirname(os.path.realpath(__file__))
+   #wd = os.getcwd()
 os.chdir(wd)
 
 # canvas
@@ -67,7 +68,7 @@ class timeslideApp(QWidget):
         self.resize(init_win_width, init_win_height)
 
         # image canvas
-        self.showImage(QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg'))
+        self.showImage(QPixmap(f'{wd}/dustbowl.jpg'))
 
         # frame - status
         frame_status = QGroupBox(self)
@@ -199,8 +200,6 @@ class timeslideApp(QWidget):
         self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
-
 
 def main():
     app = QApplication(sys.argv)
