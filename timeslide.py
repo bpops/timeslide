@@ -68,6 +68,9 @@ class timeslideApp(QWidget):
         self.resize(init_win_width, init_win_height)
 
         # image canvas
+        self.img_lbl = QLabel()
+        self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
         self.showImage(QPixmap(f'{wd}/dustbowl.jpg'))
 
         # frame - status
@@ -185,11 +188,9 @@ class timeslideApp(QWidget):
         Load local file
         """
         filepath = QFileDialog.getOpenFileName(self, 'Load photo', wd)
-        print(filepath[0])
         if filepath[0]:
+            self.setStatus(f"Opened {filepath[0]}")
             self.showImage(QPixmap(filepath[0]))
-        else:
-            self.setStatus("Error: File unrecognizable")
             #f = open(filepath[0], 'r')
             #with f:
             #    data = f.read()
@@ -209,9 +210,6 @@ class timeslideApp(QWidget):
         self.img = self.pix_map.scaled(init_canv_width, init_canv_height,
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
             transformMode=Qt.TransformationMode.SmoothTransformation)
-        self.img_lbl = QLabel()
-        self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
