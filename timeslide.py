@@ -67,15 +67,7 @@ class timeslideApp(QWidget):
         self.resize(init_win_width, init_win_height)
 
         # image canvas
-        self.pix_map = QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg')
-        self.img = self.pix_map.scaled(init_canv_width, init_canv_height,
-            aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
-            transformMode=Qt.TransformationMode.SmoothTransformation)
-        self.img_lbl = QLabel()
-        self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
-        self.img_lbl.setPixmap(self.img)
-        self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.showImage(QPixmap('/Users/bbudden/repos/timeslide/dustbowl.jpg'))
 
         # frame - status
         frame_status = QGroupBox(self)
@@ -193,6 +185,22 @@ class timeslideApp(QWidget):
             with f:
                 data = f.read()
                 self.textEdit.setText(data)
+
+    def showImage(self, pix_map):
+        """
+        Show the given QPixMap
+        """
+        self.pix_map = pix_map
+        self.img = self.pix_map.scaled(init_canv_width, init_canv_height,
+            aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
+            transformMode=Qt.TransformationMode.SmoothTransformation)
+        self.img_lbl = QLabel()
+        self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
+        self.img_lbl.setPixmap(self.img)
+        self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+
+
 
 def main():
     app = QApplication(sys.argv)
