@@ -37,6 +37,7 @@ from cv2 import dnn_superres
 #import tensorflow as tf
 import shutil
 import os
+from PIL import Image
 #import urllib.request
 #import io
 #import numpy as np
@@ -71,7 +72,8 @@ class timeslideApp(QWidget):
         self.img_lbl = QLabel()
         self.img_lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.img_lbl.setMinimumSize(init_canv_width, init_canv_height)
-        self.showImage(QPixmap(f'{wd}/dustbowl.jpg'))
+        img_pth = f'{wd}/dustbowl.jpg'
+        self.showImage(img_pth)
 
         # frame - status
         frame_status = QGroupBox(self)
@@ -191,6 +193,7 @@ class timeslideApp(QWidget):
         if filepath[0]:
             self.setStatus(f"Opened {filepath[0]}")
             self.showImage(QPixmap(filepath[0]))
+            self.img_base = Image.open(filepath[0])
             #f = open(filepath[0], 'r')
             #with f:
             #    data = f.read()
@@ -202,17 +205,18 @@ class timeslideApp(QWidget):
         """
         self.lbl_status.setText(text)
 
-    def showImage(self, pix_map):
+    def showImage(self, img_pth):
         """
-        Show the given QPixMap
+        Show the given image
         """
-        self.pix_map = pix_map
+        self.pix_map = QPixmap(img_pth)
         self.img = self.pix_map.scaled(self.img_lbl.size().width(),
             self.img_lbl.size().height(),
             aspectRatioMode = Qt.AspectRatioMode.KeepAspectRatio,
             transformMode=Qt.TransformationMode.SmoothTransformation)
         self.img_lbl.setPixmap(self.img)
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.img_base = Image.open(img_pth)
         self.update()
 
 def main():
