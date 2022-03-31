@@ -223,6 +223,8 @@ class timeslideApp(QWidget):
         Set Status Text
         """
         self.lbl_status.setText(text)
+        self.lbl_status.repaint()
+        QApplication.processEvents()
 
     def showImage(self, img_pth):
         """
@@ -267,13 +269,12 @@ class timeslideApp(QWidget):
             model     = self.ddown_stepcolor.currentText()
             artistic  = False if model_i == 0 else True
             rndr_fctr = self.sldr_stepcolor.value()
-
+            
             # set status
             self.setStatus(f"Colorizing ({model} {rndr_fctr}). Please wait...")
 
             # set colorizer
             colorizer = get_image_colorizer(artistic=artistic)
-
 
 def main():
     app = QApplication(sys.argv)
