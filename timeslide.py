@@ -165,6 +165,7 @@ class timeslideApp(QWidget):
         btn_slidetime = QPushButton("Slide Time!")
         btn_slidetime.clicked.connect(self.slideTime)
         btn_savenewphoto = QPushButton("Save New Photo")
+        btn_savenewphoto.clicked.connect(self.saveImage)
         frame_stepslide.setLayout(layout_stepslide)
         layout_stepslide.addWidget(btn_slidetime, 1)
         layout_stepslide.addWidget(btn_savenewphoto)
@@ -283,11 +284,19 @@ class timeslideApp(QWidget):
 
             # perform colorization
             colorizer = get_image_colorizer(artistic=artistic)
-
             self.result_path = colorizer.plot_transformed_image(path=self.img_pth,
                 render_factor=rndr_fctr, compare=False, watermarked=False)
             self.showImage(str(self.result_path.absolute()))
 
+    def saveImage(self):
+        """
+        Save the timeslid image
+        """
+        save_pth = QFileDialog.getSaveFileName(self, 'Save File')
+        if save_pth[0]:
+            self.img_base.save(save_pth[0])
+            self.setStatus('File saved.')
+    
 def main():
     app = QApplication(sys.argv)
     ex = timeslideApp()
