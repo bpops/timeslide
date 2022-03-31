@@ -11,6 +11,7 @@
 
 
 # pyqt6 requirements
+#from tkinter import image_types
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
@@ -231,15 +232,18 @@ class timeslideApp(QWidget):
         Show the given image
         """
 
+        # set globally
+        self.img_pth = img_pth
+
         # load the pixel map
         if not validators.url(img_pth): # local path
             self.pix_map = QPixmap(img_pth)
-            is_url = False
+            self.is_url = False
         else:                           # url
             img_data = urllib.request.urlopen(img_pth).read()
             self.pix_map = QPixmap()
             self.pix_map.loadFromData(img_data)
-            is_url = True
+            self.is_url = True
         
         # set canvas properties
         self.img = self.pix_map.scaled(self.img_lbl.size().width(),
@@ -250,7 +254,7 @@ class timeslideApp(QWidget):
         self.img_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
         # open the image
-        if is_url:
+        if self.is_url:
             self.setStatus("Downloading. Please wait...")
             response = requests.get(img_pth)
             self.img_base = Image.open(BytesIO(response.content))
@@ -273,8 +277,15 @@ class timeslideApp(QWidget):
             # set status
             self.setStatus(f"Colorizing ({model} {rndr_fctr}). Please wait...")
 
-            # set colorizer
+            # perform colorization
             colorizer = get_image_colorizer(artistic=artistic)
+            if not self.is_url: # local file
+                self.result_path = colorizer.plot_transformed_image(path=self.img_pth,
+                    render_factor=rndr_fctr, compare=False, watermarked=False)
+            else:
+                self.result_path = colorizer.plot_transformed_image_from_url(url=self.img_pth,
+                    render_factor=rndr_fctr, compare=False, watermarked=False)
+            self.showImage(str(self.result_path.absolute()))
 
 def main():
     app = QApplication(sys.argv)
