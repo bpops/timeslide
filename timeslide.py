@@ -47,6 +47,7 @@ import validators
 import requests
 #import urllib.request
 from io import BytesIO
+import tempfile
 #import numpy as np
 #import time
 
@@ -255,9 +256,12 @@ class timeslideApp(QWidget):
         
         # open the image
         if self.is_url:
-            self.setStatus("Downloading. Please wait...")
+            self.setStatus("Downloading...")
             response = requests.get(img_pth)
             self.img_base = Image.open(BytesIO(response.content))
+            tmp = tempfile.NamedTemporaryFile()
+            self.img_base.save(tmp.name+".png")
+            self.img_pth = (tmp.name+".png")
             self.setStatus(f"Downloaded {img_pth}")
         else:
             self.img_base = Image.open(img_pth)
@@ -279,12 +283,9 @@ class timeslideApp(QWidget):
 
             # perform colorization
             colorizer = get_image_colorizer(artistic=artistic)
-            if not self.is_url: # local file
-                self.result_path = colorizer.plot_transformed_image(path=self.img_pth,
-                    render_factor=rndr_fctr, compare=False, watermarked=False)
-            else:
-                self.result_path = colorizer.plot_transformed_image_from_url(url=self.img_pth,
-                    render_factor=rndr_fctr, compare=False, watermarked=False)
+
+            self.result_path = colorizer.plot_transformed_image(path=self.img_pth,
+                render_factor=rndr_fctr, compare=False, watermarked=False)
             self.showImage(str(self.result_path.absolute()))
 
 def main():
