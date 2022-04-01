@@ -17,7 +17,7 @@ from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtGui     import QPixmap
-from PyQt6.QtCore    import Qt, pyqtSignal
+from PyQt6.QtCore    import Qt#, pyqtSignal
 
 # required for pyinstaller: pytorch
 import os
@@ -27,7 +27,7 @@ os.environ["PYTORCH_JIT"] = "0"
 from deoldify import device
 from deoldify.device_id import DeviceId
 device.set(device = DeviceId.GPU0)
-from deoldify.visualize import *
+from deoldify.visualize import * # this line causes failure with pyinstaller
 torch.backends.cudnn.benchmark = True
 import torchvision
 
@@ -63,8 +63,9 @@ model_dir = f"{wd}/models"
 
 # load pretrained torch models
 os.environ["TORCH_HOME"] = model_dir
-resnet = torchvision.models.resnet34(pretrained=True)
-resnet = torchvision.models.resnet101(pretrained=True)
+print("torch home: " + model_dir)
+#resnet = torchvision.models.resnet34(pretrained=True)
+#resnet = torchvision.models.resnet101(pretrained=True)
 
 # canvas
 init_canv_width  = 640

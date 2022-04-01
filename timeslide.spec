@@ -1,17 +1,19 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
+#excluded_modules = ['torch.distributions']
+to_remove = ["_C.cpython-39-darwin.so", "_dl.cpython-39-darwin.so"]
 
 a = Analysis(['timeslide.py'],
              pathex=['.'],
              binaries=[],
-             datas=[('models/*','models'),
+             datas=[('models/','models'),
                     ('imgs/dustbowl.jpg','imgs')
                    ],
              hiddenimports=[],
              hookspath=['hooks'],
              runtime_hooks=[],
-             excludes=[],
+             excludes=[],#excluded_modules,
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
@@ -19,13 +21,22 @@ a = Analysis(['timeslide.py'],
 
 # libpng
 #a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
-#a.binaries = a.binaries + TOC([('libpng16.16.dylib', 
-#    '/usr/local/Cellar/libpng/1.6.37/lib/libpng16.16.dylib', 'BINARY')])
+a.binaries = a.binaries + TOC([('libpng16.16.dylib', 
+    '/usr/local/Cellar/libpng/1.6.37/lib/libpng16.16.dylib', 'BINARY')])
 
 # opencv2-contrib
 #a.binaries = a.binaries - TOC([('cv2.cpython-37m-darwin.so',None,None)])
-#a.binaries = a.binaries + TOC([('cv2.cpython-37m-darwin.so', 
-#    'venv/lib/python3.7/site-packages/cv2/cv2.cpython-37m-darwin.so', 'BINARY')])
+a.binaries = a.binaries + TOC([('cv2.abi3.so', 
+    'venv/lib/python3.9/site-packages/cv2/cv2.abi3.so', 'BINARY')])
+
+
+#to_remove = ["_C.cpython-39-darwin.so", "_dl.cpython-39-darwin.so"]
+#avoid warning 
+for d in a.datas:
+    if '_C.cpython-39-darwin.so' in d[0]:
+        a.datas.remove(d)
+    if '_dl.cpython-39-darwin.so' in d[0]:
+        a.datas.remove(d)
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
