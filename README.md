@@ -77,6 +77,7 @@ Please note that distributing the application to others will require that they e
 - complete rewrite of gui in pyqt6
 - enable URL loading
 - removed enhancement as implementation was far too slow
+- change license from MIT to GPLv3
 
 ### v0.4.2 (2022.02.14)
 - updated deoldify models to current urls
