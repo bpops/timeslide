@@ -57,15 +57,11 @@ try:
    wd = sys._MEIPASS
 except AttributeError:
    wd = os.path.dirname(os.path.realpath(__file__))
-   #wd = os.getcwd()
 os.chdir(wd)
 model_dir = f"{wd}/models"
 
 # load pretrained torch models
 os.environ["TORCH_HOME"] = model_dir
-print("torch home: " + model_dir)
-#resnet = torchvision.models.resnet34(pretrained=True)
-#resnet = torchvision.models.resnet101(pretrained=True)
 
 # canvas
 init_canv_width  = 640
@@ -113,7 +109,7 @@ class timeslideApp(QWidget):
         layout_loadstep.addWidget(btn_loadlocal)
         layout_loadstep.addWidget(lbl_loadstep_or)
         layout_loadstep.addWidget(self.text_loadstep_url, 1)
-        self.text_loadstep_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # wtf.
+        self.text_loadstep_url.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         layout_loadstep.addWidget(btn_load_url)
 
         # colorize
@@ -264,7 +260,7 @@ class timeslideApp(QWidget):
             tmp = tempfile.NamedTemporaryFile()
             self.img_base.save(tmp.name+".png")
             self.img_pth = (tmp.name+".png")
-            self.setStatus(f"Downloaded {img_pth}")
+            self.setStatus(f"Downloaded image.")
         else:
             self.img_base = Image.open(img_pth)
         self.update()
