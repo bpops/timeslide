@@ -13,18 +13,18 @@ wget https://data.deepai.org/deoldify/ColorizeArtistic_gen.pth                  
 wget https://www.dropbox.com/s/usf7uifrctqw9rl/ColorizeStable_gen.pth           -O ./models/ColorizeStable_gen.pth
 
 # opencv2 models
-wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x2.pb     -O ./models/EDSR_x2.pb
-wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x3.pb     -O ./models/EDSR_x3.pb
-wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x4.pb     -O ./models/EDSR_x4.pb
-wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x2.pb      -O ./models/ESPCN_x2.pb
-wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x3.pb      -O ./models/ESPCN_x3.pb
-wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x4.pb      -O ./models/ESPCN_x4.pb
-wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x2.pb -O ./models/FSRCNN_x2.pb
-wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x3.pb -O ./models/FSRCNN_x3.pb
-wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x4.pb -O ./models/FSRCNN_x4.pb
-wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x2.pb    -O ./models/LapSRN_x2.pb
-wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x4.pb    -O ./models/LapSRN_x4.pb
-wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x8.pb    -O ./models/LapSRN_x8.pb
+#wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x2.pb     -O ./models/EDSR_x2.pb
+#wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x3.pb     -O ./models/EDSR_x3.pb
+#wget https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x4.pb     -O ./models/EDSR_x4.pb
+#wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x2.pb      -O ./models/ESPCN_x2.pb
+#wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x3.pb      -O ./models/ESPCN_x3.pb
+#wget https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x4.pb      -O ./models/ESPCN_x4.pb
+#wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x2.pb -O ./models/FSRCNN_x2.pb
+#wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x3.pb -O ./models/FSRCNN_x3.pb
+#wget https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x4.pb -O ./models/FSRCNN_x4.pb
+#wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x2.pb    -O ./models/LapSRN_x2.pb
+#wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x4.pb    -O ./models/LapSRN_x4.pb
+#wget https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x8.pb    -O ./models/LapSRN_x8.pb
 
 # torch models
 mkdir models/hub
