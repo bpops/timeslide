@@ -5,7 +5,9 @@ block_cipher = None
 a = Analysis(['timeslide.py'],
              pathex=['.'],
              binaries=[],
-             datas=[('models/*','models')],
+             datas=[('models/','models'),
+                    ('imgs/dustbowl.jpg','imgs')
+                   ],
              hiddenimports=[],
              hookspath=['hooks'],
              runtime_hooks=[],
@@ -16,14 +18,22 @@ a = Analysis(['timeslide.py'],
              noarchive=False)
 
 # libpng
-a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
+#a.binaries = a.binaries - TOC([('libpng16.16.dylib',None,None)])
 a.binaries = a.binaries + TOC([('libpng16.16.dylib', 
     '/usr/local/Cellar/libpng/1.6.37/lib/libpng16.16.dylib', 'BINARY')])
 
 # opencv2-contrib
 #a.binaries = a.binaries - TOC([('cv2.cpython-37m-darwin.so',None,None)])
-#a.binaries = a.binaries + TOC([('cv2.cpython-37m-darwin.so', 
-#    'venv/lib/python3.7/site-packages/cv2/cv2.cpython-37m-darwin.so', 'BINARY')])
+a.binaries = a.binaries + TOC([('cv2.abi3.so', 
+    'venv/lib/python3.9/site-packages/cv2/cv2.abi3.so', 'BINARY')])
+
+
+# avoid warning regarding "_C.cpython-39-darwin.so" and "_dl.cpython-39-darwin.so"
+for d in a.datas:
+    if '_C.cpython-39-darwin.so' in d[0]:
+        a.datas.remove(d)
+    if '_dl.cpython-39-darwin.so' in d[0]:
+        a.datas.remove(d)
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
