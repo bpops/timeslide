@@ -1,8 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
-#excluded_modules = ['torch.distributions']
-to_remove = ["_C.cpython-39-darwin.so", "_dl.cpython-39-darwin.so"]
 
 a = Analysis(['timeslide.py'],
              pathex=['.'],
@@ -13,7 +11,7 @@ a = Analysis(['timeslide.py'],
              hiddenimports=[],
              hookspath=['hooks'],
              runtime_hooks=[],
-             excludes=[],#excluded_modules,
+             excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
@@ -30,8 +28,7 @@ a.binaries = a.binaries + TOC([('cv2.abi3.so',
     'venv/lib/python3.9/site-packages/cv2/cv2.abi3.so', 'BINARY')])
 
 
-#to_remove = ["_C.cpython-39-darwin.so", "_dl.cpython-39-darwin.so"]
-#avoid warning 
+# avoid warning regarding "_C.cpython-39-darwin.so" and "_dl.cpython-39-darwin.so"
 for d in a.datas:
     if '_C.cpython-39-darwin.so' in d[0]:
         a.datas.remove(d)
