@@ -285,6 +285,8 @@ class timeslideApp(QWidget):
                 render_factor=rndr_fctr, compare=False, watermarked=False)
             self.showImage(str(self.result_path.absolute()))
 
+        self.setStatus("Time slide complete.")
+
     def saveImage(self):
         """
         Save the timeslid image
