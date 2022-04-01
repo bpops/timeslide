@@ -118,13 +118,22 @@ class timeslideApp(QWidget):
         layout_stepcolor = QHBoxLayout()
         self.cbox_stepcolor = QCheckBox("Colorize")
         self.cbox_stepcolor.setChecked(1)
+        self.cbox_stepcolor.setToolTip("Colorize the photo using the deolidify project, "
+            "using their pretrained model weights.")
         self.ddown_stepcolor = QComboBox()
         self.ddown_stepcolor.addItems(["Stable", "Artistic"])
+        self.ddown_stepcolor.setToolTip("Artistic: More colorful.\n"
+            "Stable: Not as colorful, but fewer glitches.\n"
+            "According to deoldify, Stable should be used for landscapes "
+            "and portraits; Artistic otherwise.")
         self.sldr_stepcolor = QSlider(Qt.Orientation.Horizontal)
         min_rndr_fctr = 7
         max_rndr_fctr = 45
         self.sldr_stepcolor.setMinimum(min_rndr_fctr)
         self.sldr_stepcolor.setMaximum(max_rndr_fctr)
+        self.sldr_stepcolor.setToolTip("According to De-oldify, older images tend to "
+            "benefit from a lower render factor (which is faster). Newer images tend to "
+            "benefit from a higher render factor.")
         frame_stepcolor.setLayout(layout_stepcolor)
         layout_stepcolor.addWidget(self.cbox_stepcolor)
         layout_stepcolor.addWidget(QLabel("     Model:"))
