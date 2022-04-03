@@ -15,7 +15,7 @@
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
-from PyQt6.QtWidgets import QSizePolicy
+from PyQt6.QtWidgets import QSizePolicy, QMenuBar, QMainWindow
 from PyQt6.QtGui     import QPixmap
 from PyQt6.QtCore    import Qt#, pyqtSignal
 
@@ -69,7 +69,7 @@ init_canv_height = 440
 init_win_width   = 600
 init_win_height  = 738
 
-class timeslideApp(QWidget):
+class timeslideApp(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -177,14 +177,23 @@ class timeslideApp(QWidget):
         layout_stepslide.addWidget(btn_savenewphoto)
 
         # overall layout
-        self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.img_lbl)#alignment=Qt.AlignmentFlag.AlignCenter)
-        self.vbox.addWidget(frame_status,    stretch=0)
-        self.vbox.addWidget(frame_loadstep,  stretch=0)
-        self.vbox.addWidget(frame_stepcolor, stretch=0)
+        self.central = QWidget()
+        self.setCentralWidget(self.central)
+        self.central.vbox = QVBoxLayout()
+        self.central.vbox.addWidget(self.img_lbl)#alignment=Qt.AlignmentFlag.AlignCenter)
+        self.central.vbox.addWidget(frame_status,    stretch=0)
+        self.central.vbox.addWidget(frame_loadstep,  stretch=0)
+        self.central.vbox.addWidget(frame_stepcolor, stretch=0)
         #self.vbox.addWidget(frame_stepenhance, stretch=0)
-        self.vbox.addWidget(frame_stepslide, stretch=0)
-        self.setLayout(self.vbox)
+        self.central.vbox.addWidget(frame_stepslide, stretch=0)
+        self.central.setLayout(self.central.vbox)
+
+        # menu bar
+        #menuBar = QMenuBar()
+        #self.vbox.addWidget(menuBar)
+        #fileMenu = menuBar.addMenu('File')
+        #fileMenu =menuBar.addMenu('&File')
+        #fileMenu.addAction(exitAct)
 
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
