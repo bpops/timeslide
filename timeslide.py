@@ -189,16 +189,19 @@ class timeslideApp(QMainWindow):
         self.central.setLayout(self.central.vbox)
 
         # close action
-        exitAct = QAction("Exit TimeSlide", self)
+        exitAct  = QAction("Exit TimeSlide", self)
         exitAct.triggered.connect(QCoreApplication.quit)
         loadAct  = QAction("Load Local Photo...", self)
         loadAct.triggered.connect(self.loadLocal)
+        saveAct  = QAction("Save New Photo As...", self)
+        saveAct.triggered.connect(self.saveImage)
 
         # menu bar
         menuBar = self.menuBar()
         menuBar.setNativeMenuBar(False)
         fileMenu = menuBar.addMenu("File")
         fileMenu.addAction(loadAct)
+        fileMenu.addAction(saveAct)
         fileMenu.addAction(exitAct)
         #helpMenu = menuBar.addMenu("Help")
 
