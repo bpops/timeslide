@@ -15,9 +15,9 @@
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
-from PyQt6.QtWidgets import QSizePolicy, QMenuBar, QMainWindow
-from PyQt6.QtGui     import QPixmap
-from PyQt6.QtCore    import Qt#, pyqtSignal
+from PyQt6.QtWidgets import QSizePolicy, QMenuBar, QMainWindow, QMenu
+from PyQt6.QtGui     import QPixmap, QIcon, QAction
+from PyQt6.QtCore    import Qt, QCoreApplication#, pyqtSignal
 
 # required for pyinstaller: pytorch
 import os
@@ -184,16 +184,23 @@ class timeslideApp(QMainWindow):
         self.central.vbox.addWidget(frame_status,    stretch=0)
         self.central.vbox.addWidget(frame_loadstep,  stretch=0)
         self.central.vbox.addWidget(frame_stepcolor, stretch=0)
-        #self.vbox.addWidget(frame_stepenhance, stretch=0)
+        #self.central.vbox.addWidget(frame_stepenhance, stretch=0)
         self.central.vbox.addWidget(frame_stepslide, stretch=0)
         self.central.setLayout(self.central.vbox)
 
+        # close action
+        exitAct = QAction("Exit TimeSlide", self)
+        exitAct.triggered.connect(QCoreApplication.quit)
+        loadAct  = QAction("Load Local Photo...", self)
+        loadAct.triggered.connect(self.loadLocal)
+
         # menu bar
-        #menuBar = QMenuBar()
-        #self.vbox.addWidget(menuBar)
-        #fileMenu = menuBar.addMenu('File')
-        #fileMenu =menuBar.addMenu('&File')
-        #fileMenu.addAction(exitAct)
+        menuBar = self.menuBar()
+        menuBar.setNativeMenuBar(False)
+        fileMenu = menuBar.addMenu("File")
+        fileMenu.addAction(loadAct)
+        fileMenu.addAction(exitAct)
+        #helpMenu = menuBar.addMenu("Help")
 
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
