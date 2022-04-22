@@ -73,6 +73,11 @@ Please note that distributing the application to others will require that they e
 
 ## Release Notes
 
+### v0.5.1 (2022.04.22)
+- added menu bar
+- added license window
+- added about window
+
 ### v0.5 (2022.03.31)
 - complete rewrite of gui in pyqt6
 - enable URL loading

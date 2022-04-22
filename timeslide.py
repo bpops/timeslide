@@ -211,7 +211,7 @@ class timeslideApp(QMainWindow):
         helpMenu.addAction(licAct)
         helpMenu.addAction(abtAct)
 
-        self.setWindowTitle('TimeSlide v0.5')
+        self.setWindowTitle('TimeSlide v0.5.1')
         self.show();
         self.centerWindow()
 
