@@ -15,8 +15,8 @@
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt6.QtWidgets import QGroupBox, QPushButton, QHBoxLayout, QLineEdit
 from PyQt6.QtWidgets import QCheckBox, QComboBox, QSlider, QFileDialog
-from PyQt6.QtWidgets import QSizePolicy, QMenuBar, QMainWindow, QMenu
-from PyQt6.QtGui     import QPixmap, QIcon, QAction
+from PyQt6.QtWidgets import QSizePolicy, QMenuBar, QMainWindow, QMenu, QTextBrowser
+from PyQt6.QtGui     import QPixmap, QIcon, QAction, QTextCursor
 from PyQt6.QtCore    import Qt, QCoreApplication#, pyqtSignal
 
 # required for pyinstaller: pytorch
@@ -195,6 +195,8 @@ class timeslideApp(QMainWindow):
         loadAct.triggered.connect(self.loadLocal)
         saveAct  = QAction("Save New Photo As...", self)
         saveAct.triggered.connect(self.saveImage)
+        licAct   = QAction("License", self)
+        licAct.triggered.connect(self.showLicense)
 
         # menu bar
         menuBar = self.menuBar()
@@ -203,7 +205,8 @@ class timeslideApp(QMainWindow):
         fileMenu.addAction(loadAct)
         fileMenu.addAction(saveAct)
         fileMenu.addAction(exitAct)
-        #helpMenu = menuBar.addMenu("Help")
+        helpMenu = menuBar.addMenu("Help")
+        helpMenu.addAction(licAct)
 
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
@@ -324,6 +327,31 @@ class timeslideApp(QMainWindow):
             self.img_base.save(save_pth[0])
             self.setStatus('File saved.')
     
+    def showLicense(self):
+        """
+        Show the License
+        """
+        self.licWin = licenseWindow()
+
+class licenseWindow(QTextBrowser):
+    """
+    License Window
+    """
+    def __init__(self):
+        super().__init__()
+
+        # read license text and add
+        f = open("LICENSE")
+        licText = f.read()
+        f.close()
+        self.insertPlainText(licText)
+        self.setWindowTitle("GNU General Public License v3")
+        self.resize(580,500)
+        self.show()
+
+        # scroll to top
+        self.verticalScrollBar().setValue(0)
+
 def main():
     app = QApplication(sys.argv)
     ex = timeslideApp()
