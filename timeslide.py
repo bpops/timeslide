@@ -188,7 +188,7 @@ class timeslideApp(QMainWindow):
         self.central.vbox.addWidget(frame_stepslide, stretch=0)
         self.central.setLayout(self.central.vbox)
 
-        # close action
+        # actions
         exitAct  = QAction("Exit TimeSlide", self)
         exitAct.triggered.connect(QCoreApplication.quit)
         loadAct  = QAction("Load Local Photo...", self)
@@ -197,6 +197,8 @@ class timeslideApp(QMainWindow):
         saveAct.triggered.connect(self.saveImage)
         licAct   = QAction("License", self)
         licAct.triggered.connect(self.showLicense)
+        abtAct   = QAction("About", self)
+        abtAct.triggered.connect(self.showAbout)
 
         # menu bar
         menuBar = self.menuBar()
@@ -207,6 +209,7 @@ class timeslideApp(QMainWindow):
         fileMenu.addAction(exitAct)
         helpMenu = menuBar.addMenu("Help")
         helpMenu.addAction(licAct)
+        helpMenu.addAction(abtAct)
 
         self.setWindowTitle('TimeSlide v0.5')
         self.show();
@@ -333,6 +336,12 @@ class timeslideApp(QMainWindow):
         """
         self.licWin = licenseWindow()
 
+    def showAbout(self):
+        """
+        Show the About
+        """
+        self.abtWin = aboutWindow()
+
 class licenseWindow(QTextBrowser):
     """
     License Window
@@ -347,6 +356,25 @@ class licenseWindow(QTextBrowser):
         self.insertPlainText(licText)
         self.setWindowTitle("GNU General Public License v3")
         self.resize(580,500)
+        self.show()
+
+        # scroll to top
+        self.verticalScrollBar().setValue(0)
+
+class aboutWindow(QTextBrowser):
+    """
+    About Window
+    """
+    def __init__(self):
+        super().__init__()
+
+        # read license text and add
+        self.append("\n")
+        self.append("                    created for fun by bpops")
+        self.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"https://github.com/bpops/timeslide\">https://github.com/bpops/timeslide</a>")
+        self.setWindowTitle("About")
+        self.resize(300,100)
+        self.setOpenExternalLinks(True)
         self.show()
 
         # scroll to top
